@@ -1,4 +1,4 @@
-package com.itashiev.ogrnot.ogrnotapplication;
+package com.itashiev.ogrnot.ogrnotapplication.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -21,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.itashiev.ogrnot.ogrnotapplication.R;
 
 import java.util.Locale;
 

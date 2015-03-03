@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_background"
     android:orientation="vertical"
-    tools:context="com.itashiev.ogrnot.ogrnotapplication.LoginActivity">
+    tools:context="com.itashiev.ogrnot.ogrnotapplication.activities.LoginActivity">
 
 
     <ImageView
@@ -44,7 +44,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/text" />
 
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/student_number"
                 style="@style/SignInEditText"
                 android:completionThreshold="1"

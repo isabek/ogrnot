@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.itashiev.ogrnot.ogrnotapplication.MainActivity">
+    tools:context="com.itashiev.ogrnot.ogrnotapplication.activities.MainActivity">
     <item android:id="@+id/action_web_search"
         android:icon="@drawable/action_search"
         android:orderInCategory="100"
