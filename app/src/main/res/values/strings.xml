@@ -22,4 +22,5 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_web_search">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="authenticate">Authentication ...</string>
 </resources>

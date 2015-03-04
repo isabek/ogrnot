@@ -2,6 +2,8 @@ package com.itashiev.ogrnot.ogrnotapplication.activities;
 
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 
@@ -17,6 +19,7 @@ import android.widget.ScrollView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
 import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
+import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -35,6 +38,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private ScrollView loginFormScrollView;
     private ImageView logoImageView;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +48,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         studentNumberEditTextView = (EditText) findViewById(R.id.student_number);
         passwordEditTextView = (EditText) findViewById(R.id.password);
         signInButtonView = (Button) findViewById(R.id.button_sign_in);
-        loginProgressBar = (ProgressBar)findViewById(R.id.login_progress);
         loginFormScrollView = (ScrollView) findViewById(R.id.login_form);
         logoImageView = (ImageView)findViewById(R.id.logo);
 
@@ -54,12 +58,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 String studentNumber = studentNumberEditTextView.getText().toString();
                 String password = passwordEditTextView.getText().toString();
 
-                System.out.println(studentNumber);
-                System.out.println(password);
-
                 RequestParams params = new RequestParams();
                 params.put("user", studentNumber);
                 params.put("pass", password);
+
+                initProgressDialog();
+                progressDialog.show();
 
                 OgrnotRestClient.post("authenticate", params, new JsonHttpResponseHandler() {
 
@@ -67,23 +71,35 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         try {
                             String authKey = (String) response.get("authKey");
+                            AuthKeyStore.setAuthKey(getApplicationContext(), authKey);
+
                         } catch (JSONException e) {
                             Log.e("LoginActivity", e.getMessage());
                         }
+
+                        progressDialog.dismiss();
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
-                        System.out.println("2");
-                        System.out.println(responseString);
-                        System.out.println(statusCode + "");
                     }
                 });
 
             }
         });
 
+    }
+
+    private void initProgressDialog(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.authenticate));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
     }
 
     @Override
