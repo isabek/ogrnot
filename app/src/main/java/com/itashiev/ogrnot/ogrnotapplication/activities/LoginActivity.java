@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.database.Cursor;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
 import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
@@ -73,27 +75,36 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                             String authKey = (String) response.get("authKey");
                             AuthKeyStore.setAuthKey(getApplicationContext(), authKey);
 
+                            progressDialog.dismiss();
+
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+
                         } catch (JSONException e) {
-                            Log.e("LoginActivity", e.getMessage());
+                            setMessageToProgressDialog(getString(R.string.authentication_auth_key_not_found));
                         }
-
-                        progressDialog.dismiss();
-
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                        setMessageToProgressDialog(getString(R.string.authentication_failed));
                     }
                 });
 
             }
         });
 
+    }
+
+    private void setMessageToProgressDialog(String message){
+        progressDialog.setMessage(message);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        }, 2000);
     }
 
     private void initProgressDialog(){
