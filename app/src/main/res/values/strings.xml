@@ -7,7 +7,7 @@
     <string name="label_student_number">Student Number</string>
     <string name="label_sign_in">Sign In</string>
     <string name="logo_content_description">Logo</string>
-    
+
     <string-array name="planets_array">
         <item>Mercury</item>
         <item>Venus</item>
@@ -25,4 +25,8 @@
     <string name="authenticate">Authentication …</string>
     <string name="authentication_failed">Authentication Failed …</string>
     <string name="authentication_auth_key_not_found">Please try again later …</string>
+    <string name="save">Save</string>
+    <string name="repeat_new_password">Repeat New Password</string>
+    <string name="new_password">New Password</string>
+    <string name="current_password">Current Password</string>
 </resources>
