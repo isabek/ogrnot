@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="70dp"
+        android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/taken_lessons_lesson_code"
+            android:text="@string/lesson_code_tr"
+            android:layout_weight="2"
+            android:textColor="#48484a"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/taken_lessons_lesson_name"
+            android:text="@string/lesson_name_tr"
+            android:textStyle="normal"
+            android:layout_weight="6"
+            android:textSize="16sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="4dp"
+            android:paddingLeft="4dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/taken_lessons_lesson_credit"
+            android:text="@string/lesson_credit_tr"
+            android:textStyle="normal"
+            android:layout_weight="2"
+            android:textSize="16sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:paddingTop="10dp"/>
+
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/horizontalScrollView"
+            android:layout_column="11" />
+    </TableRow>
+
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+        <TextView
+            android:text="BİL-346"
+            android:layout_weight="2"
+            android:textColor="#48484a"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="14sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:text="YAZILIM MÜHENDİSLİĞİ"
+            android:textStyle="normal"
+            android:layout_weight="6"
+            android:textSize="16sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="4dp"
+            android:paddingLeft="4dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:text="4"
+            android:textStyle="normal"
+            android:layout_weight="2"
+            android:textSize="14sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:paddingTop="10dp"/>
+    </TableRow>
+
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+        <TextView
+            android:text="BİL-442"
+            android:layout_weight="2"
+            android:textColor="#48484a"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="14sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:text="VERİ İLETİŞİMİ VE BİLGİSAYAR AĞLARI"
+            android:textStyle="normal"
+            android:layout_weight="6"
+            android:textSize="14sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="4dp"
+            android:paddingLeft="4dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:text="3"
+            android:textStyle="normal"
+            android:layout_weight="2"
+            android:textSize="14sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:paddingTop="10dp"/>
+    </TableRow>
+
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+        <TextView
+            android:text="BİL-444"
+            android:layout_weight="2"
+            android:textColor="#48484a"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="14sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:text="BİLGİSAYAR MÜHENDİSLİĞİ TASARIMI I"
+            android:textStyle="normal"
+            android:layout_weight="6"
+            android:textSize="14sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="4dp"
+            android:paddingLeft="4dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:text="4"
+            android:textStyle="normal"
+            android:layout_weight="2"
+            android:textSize="14sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:paddingTop="10dp"/>
+    </TableRow>
+
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+        <TextView
+            android:text="BİL-452.02"
+            android:layout_weight="2"
+            android:textColor="#48484a"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="14sp"
+            android:gravity="right"/>
+
+        <TextView
+            android:text="BİTİRME TEZİ II"
+            android:textStyle="normal"
+            android:layout_weight="6"
+            android:textSize="14sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="4dp"
+            android:paddingLeft="4dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:text="3"
+            android:textStyle="normal"
+            android:layout_weight="2"
+            android:textSize="14sp"
+            android:textColor="#48484a"
+            android:paddingBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:paddingTop="10dp"/>
+    </TableRow>
+
+
+</TableLayout>

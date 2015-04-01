@@ -1,15 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_background"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize" />
+        android:layout_gravity="center_horizontal|top"
+        android:background="#13a89e"
+        android:minHeight="?attr/actionBarSize">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/action_bar_icon"
+            android:layout_marginRight="25dp"
+            android:contentDescription="@string/toolbar_right_icon" />
+        </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -19,13 +30,17 @@
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+        </FrameLayout>
 
         <ListView
-            android:id="@+id/lv_navigation_drawer"
-            android:layout_width="240dp"
+            android:id="@+id/left_navigation_drawer"
+            android:layout_width="280dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@android:color/white" />
+            android:background="#fff"
+            android:choiceMode="singleChoice"
+            android:divider="@color/divider_color"
+            android:dividerHeight="1dp" />
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

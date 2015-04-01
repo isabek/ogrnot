@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="70dp"
+        android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/TextView01"
+            android:text="Student Number:"
+            android:layout_weight="2"
+            android:textColor="#48484a"
+            android:paddingLeft="20dip"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:paddingRight="10dp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/TextView04"
+            android:text="0804.01009"
+            android:textStyle="bold"
+            android:layout_weight="8"
+            android:textSize="16sp"
+            android:textColor="#48484a"
+            android:paddingLeft="5dip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="0dp"/>
+    </TableRow>
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/TextView012"
+            android:text="Faculty:"
+            android:layout_weight="2"
+            android:textColor="#48484a"
+            android:paddingLeft="20dip"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:paddingRight="10dp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/TextView043"
+            android:text="Engineering Faculty"
+            android:textStyle="bold"
+            android:layout_weight="8"
+            android:textSize="16sp"
+            android:textColor="#48484a"
+            android:paddingLeft="5dip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="0dp"/>
+    </TableRow>
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/TextView0123"
+            android:text="Department:"
+            android:layout_weight="2"
+            android:textColor="#48484a"
+            android:paddingLeft="20dip"
+            android:textStyle="normal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:paddingRight="10dp"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/TextView0433"
+            android:text="Computer Engineering"
+            android:textStyle="bold"
+            android:layout_weight="8"
+            android:textSize="16sp"
+            android:textColor="#48484a"
+            android:paddingLeft="5dip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="0dp"/>
+    </TableRow>
+
+</TableLayout>
