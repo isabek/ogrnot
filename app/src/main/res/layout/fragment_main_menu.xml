@@ -1,97 +1,127 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TableLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:orientation="vertical">
 
-    <TableRow
+        <LinearLayout
+            android:id="@+id/main_menu_linear_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:visibility="invisible"
+            android:paddingBottom="50dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/student_number_label"
+                    android:text="@string/student_number_tr"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textColor="#48484a"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textStyle="normal"
+                    android:textSize="16sp"
+                    android:gravity="right"/>
+                <TextView
+                    android:id="@+id/student_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#48484a"
+                    android:paddingLeft="0dip"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="0dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/faculty_label"
+                    android:text="@string/faculty_tr"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textColor="#48484a"
+                    android:textStyle="normal"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="16sp"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="5dp"
+                    android:gravity="right"/>
+
+                <TextView
+                    android:id="@+id/faculty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#48484a"
+                    android:paddingLeft="0dip"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/department_label"
+                    android:text="@string/department_tr"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textColor="#48484a"
+                    android:textStyle="normal"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="16sp"
+                    android:gravity="right"/>
+
+                <TextView
+                    android:id="@+id/department"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#48484a"
+                    android:paddingLeft="0dip"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="0dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/main_menu_progressbar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="70dp"
-        android:gravity="center_horizontal">
-        <TextView
-            android:id="@+id/TextView01"
-            android:text="Student Number:"
-            android:layout_weight="2"
-            android:textColor="#48484a"
-            android:paddingLeft="20dip"
-            android:textStyle="normal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:textSize="16sp"
-            android:paddingRight="10dp"
-            android:gravity="right"/>
-
-        <TextView
-            android:id="@+id/TextView04"
-            android:text="0804.01009"
-            android:textStyle="bold"
-            android:layout_weight="8"
-            android:textSize="16sp"
-            android:textColor="#48484a"
-            android:paddingLeft="5dip"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="0dp"/>
-    </TableRow>
-    <TableRow
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:gravity="center_horizontal">
-        <TextView
-            android:id="@+id/TextView012"
-            android:text="Faculty:"
-            android:layout_weight="2"
-            android:textColor="#48484a"
-            android:paddingLeft="20dip"
-            android:textStyle="normal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:textSize="16sp"
-            android:paddingRight="10dp"
-            android:gravity="right"/>
-
-        <TextView
-            android:id="@+id/TextView043"
-            android:text="Engineering Faculty"
-            android:textStyle="bold"
-            android:layout_weight="8"
-            android:textSize="16sp"
-            android:textColor="#48484a"
-            android:paddingLeft="5dip"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="0dp"/>
-    </TableRow>
-    <TableRow
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:gravity="center_horizontal">
-        <TextView
-            android:id="@+id/TextView0123"
-            android:text="Department:"
-            android:layout_weight="2"
-            android:textColor="#48484a"
-            android:paddingLeft="20dip"
-            android:textStyle="normal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:textSize="16sp"
-            android:paddingRight="10dp"
-            android:gravity="right"/>
-
-        <TextView
-            android:id="@+id/TextView0433"
-            android:text="Computer Engineering"
-            android:textStyle="bold"
-            android:layout_weight="8"
-            android:textSize="16sp"
-            android:textColor="#48484a"
-            android:paddingLeft="5dip"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="0dp"/>
-    </TableRow>
-
-</TableLayout>
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:indeterminate="true" />
+</LinearLayout>

@@ -6,18 +6,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
 import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
@@ -26,7 +20,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,10 +28,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     private EditText studentNumberEditTextView;
     private EditText passwordEditTextView;
-    private Button signInButtonView;
-    private ProgressBar loginProgressBar;
-    private ScrollView loginFormScrollView;
-    private ImageView logoImageView;
 
     private ProgressDialog progressDialog;
 
@@ -49,9 +38,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         studentNumberEditTextView = (EditText) findViewById(R.id.student_number);
         passwordEditTextView = (EditText) findViewById(R.id.password);
-        signInButtonView = (Button) findViewById(R.id.button_sign_in);
-        loginFormScrollView = (ScrollView) findViewById(R.id.login_form);
-        logoImageView = (ImageView)findViewById(R.id.logo);
+        Button signInButtonView = (Button) findViewById(R.id.button_sign_in);
 
         signInButtonView.setOnClickListener(new OnClickListener() {
             @Override

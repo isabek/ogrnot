@@ -7,7 +7,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class OgrnotRestClient {
-    private static final String BASE_URL = "http://192.168.1.120:8080/api/v1/";
+    private static final String BASE_URL = "https://ogrnot-api.herokuapp.com/api/v1/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

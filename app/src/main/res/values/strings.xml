@@ -4,15 +4,16 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="label_student_number">Student Number</string>
-    <string name="label_sign_in">Sign In</string>
+    <string name="label_student_number">Öğrenci No</string>
+    <string name="label_password">Şifre</string>
+    <string name="label_sign_in">Giriş</string>
     <string name="logo_content_description">Logo</string>
     <string-array name="menu_array">
-        <item>Main Menu</item>
-        <item>Personal Info</item>
-        <item>Taken Lessons</item>
-        <item>Transcript</item>
-        <item>Password</item>
+        <item>Ana Menü</item>
+        <item>Kişisel Bilgiler</item>
+        <item>Aldığı Dersler</item>
+        <item>Transkript</item>
+        <item>Şifre Değitirme</item>
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -33,4 +34,23 @@
     <string name="lesson_code_tr">Ders Kodu</string>
     <string name="lesson_name_tr">Ders Adı</string>
     <string name="lesson_credit_tr">Kredisi</string>
+
+    <string name="student_number_tr">Numara:</string>
+    <string name="faculty_tr">Fakülte Adı:</string>
+    <string name="department_tr">Bölüm Adı:</string>
+
+    <string name="student_name_tr">Adı:</string>
+    <string name="student_surname_tr">Soyadı:</string>
+    <string name="student_birth_place_tr">Doğum Yeri:</string>
+    <string name="student_birthday_tr">Doğum Tarihi:</string>
+    <string name="student_fathers_name_tr">Baba Adı:</string>
+    <string name="student_mothers_name_tr">Anne Adı:</string>
+    <string name="student_nation_tr">Uyruğu:</string>
+
+    <string name="lesson_condition_examination">Btn.</string>
+    <string name="lesson_semester_mark">Dn.</string>
+    <string name="taken_lessons_lesson_credit_tr">Kr.</string>
+    <string name="preparatory_lesson_credit_tr">Kredisi</string>
+    <string name="preparatory_lesson_mark">Notu</string>
+    <string name="preparatory_tr">Dil Eğitimi Programı (Hazırlık)</string>
 </resources>
