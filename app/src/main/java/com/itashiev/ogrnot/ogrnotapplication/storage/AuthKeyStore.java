@@ -13,7 +13,7 @@ public class AuthKeyStore {
     public static void setAuthKey(Context context, String authKey) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
         editor.putString(keyForAuthKey, authKey);
-        editor.commit();
+        editor.apply();
     }
 
     public static String getAuthKey(Context context) {
