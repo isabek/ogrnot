@@ -37,7 +37,7 @@ public class PersonalInfoFragment extends Fragment {
     ImageView photoImageView;
 
     RelativeLayout personaInfoRelativeLayout;
-    ProgressBar personalinfoProgressBar;
+    ProgressBar personalInfoProgressBar;
 
     public PersonalInfoFragment() {
 
@@ -50,7 +50,7 @@ public class PersonalInfoFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.fragment_personal_info, container, false);
 
         personaInfoRelativeLayout = (RelativeLayout) inflate.findViewById(R.id.personal_info_relative_layout);
-        personalinfoProgressBar = (ProgressBar) inflate.findViewById(R.id.personal_info_progressbar);
+        personalInfoProgressBar = (ProgressBar) inflate.findViewById(R.id.personal_info_progressbar);
 
 
         studentNumberTextView = (TextView) inflate.findViewById(R.id.student_number);
@@ -110,7 +110,7 @@ public class PersonalInfoFragment extends Fragment {
                     setDataToElements(number, name, surname, birthplace, birthday, father, mother, nationality, url);
 
                     personaInfoRelativeLayout.setVisibility(View.VISIBLE);
-                    personalinfoProgressBar.setVisibility(View.INVISIBLE);
+                    personalInfoProgressBar.setVisibility(View.INVISIBLE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
