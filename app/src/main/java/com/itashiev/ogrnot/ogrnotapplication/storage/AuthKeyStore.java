@@ -23,8 +23,7 @@ public class AuthKeyStore {
     }
 
     private static SharedPreferences getPreferences(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences;
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
 }
