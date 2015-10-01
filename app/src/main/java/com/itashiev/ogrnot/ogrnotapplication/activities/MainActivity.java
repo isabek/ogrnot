@@ -20,6 +20,7 @@ import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.MainMenuFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.PasswordFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.PersonalInfoFragment;
+import com.itashiev.ogrnot.ogrnotapplication.fragments.SemesterMarksFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.TakenLessonsFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.TranscriptFragment;
 import com.itashiev.ogrnot.ogrnotapplication.menu.adapter.MenuDrawerListAdapter;
@@ -40,6 +41,13 @@ public class MainActivity extends ActionBarActivity {
     private ListView navigationDrawerList;
     private String[] screenTitles;
     private DrawerLayout drawerLayout;
+
+    private static final int MAIN_MENU = 0;
+    private static final int PERSONAL_INFO = 1;
+    private static final int TAKEN_LESSONS = 2;
+    private static final int SEMESTER_MARKS = 3;
+    private static final int TRANSCRIPT = 4;
+    private static final int PASSWORD = 5;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,20 +128,22 @@ public class MainActivity extends ActionBarActivity {
         Fragment fragment = null;
 
         switch (position) {
-            case 0:
+            case MAIN_MENU:
                 fragment = new MainMenuFragment();
                 break;
-            case 1:
+            case PERSONAL_INFO:
                 fragment = new PersonalInfoFragment();
                 break;
-            case 2:
+            case TAKEN_LESSONS:
                 fragment = new TakenLessonsFragment();
                 break;
-
-            case 3:
+            case SEMESTER_MARKS:
+                fragment = new SemesterMarksFragment();
+                break;
+            case TRANSCRIPT:
                 fragment = new TranscriptFragment();
                 break;
-            case 4:
+            case PASSWORD:
                 fragment = new PasswordFragment();
                 break;
             default:
@@ -161,9 +171,9 @@ public class MainActivity extends ActionBarActivity {
         MenuDrawerItem item = (MenuDrawerItem) navigationDrawerList.getItemAtPosition(position);
         item.setIcon(R.drawable.menu_item_icon_active);
     }
-    private void resetMenuItemsIcons()
-    {
-        for(int i = 0; i < navigationDrawerList.getChildCount(); i ++) {
+
+    private void resetMenuItemsIcons() {
+        for (int i = 0; i < navigationDrawerList.getChildCount(); i++) {
             MenuDrawerItem item = (MenuDrawerItem) navigationDrawerList.getItemAtPosition(i);
             item.setIcon(R.drawable.menu_item_icon_non_active);
         }

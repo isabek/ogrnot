@@ -12,8 +12,8 @@
         <item>Ana Menü</item>
         <item>Kişisel Bilgiler</item>
         <item>Aldığı Dersler</item>
+        <item>Dönemlik Notlar</item>
         <item>Transkript</item>
-        <item>Şifre Değitirme</item>
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -53,4 +53,7 @@
     <string name="preparatory_lesson_credit_tr">Kredisi</string>
     <string name="preparatory_lesson_mark">Notu</string>
     <string name="preparatory_tr">Dil Eğitimi Programı (Hazırlık)</string>
+    <string name="exam_description_tr">Açıklama</string>
+    <string name="exam_mark_tr">Notu</string>
+    <string name="exam_average_mark_tr">Ortalama</string>
 </resources>
