@@ -3,6 +3,7 @@ package com.itashiev.ogrnot.ogrnotapplication.fragments;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 public class TranscriptFragment extends Fragment {
     View inflate;
 
+    ProgressBar transcriptProgressBar;
+
     public TranscriptFragment() {
     }
 
@@ -39,6 +42,12 @@ public class TranscriptFragment extends Fragment {
         return inflate;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        transcriptProgressBar = (ProgressBar) inflate.findViewById(R.id.student_transcript_progressbar);
+    }
+
     private void getLessonsFromApi() {
 
         RequestParams params = new RequestParams();
@@ -51,20 +60,17 @@ public class TranscriptFragment extends Fragment {
 
                 try {
 
-                    ProgressBar transcriptProgressBar = (ProgressBar) inflate.findViewById(R.id.student_transcript_progressbar);
-
 
                     JSONObject preparatory = response.getJSONObject("preparatory");
                     JSONArray preparatoryLessons = preparatory.getJSONArray("lessons");
 
 
-
                     LinearLayout preparatoryLinearLayout = (LinearLayout) inflate.findViewById(R.id.preparatory_linear_layout);
                     LinearLayout preparatoryLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_layout, null);
-                    LinearLayout preparatoryLessonsLinearLayout = (LinearLayout)preparatoryLayout.findViewById(R.id.preparatory_lessons_linear_layout);
+                    LinearLayout preparatoryLessonsLinearLayout = (LinearLayout) preparatoryLayout.findViewById(R.id.preparatory_lessons_linear_layout);
 
                     JSONObject preparatoryLesson;
-                    for(int i = 0; i < preparatoryLessons.length(); i ++){
+                    for (int i = 0; i < preparatoryLessons.length(); i++) {
                         preparatoryLesson = preparatoryLessons.getJSONObject(i);
 
                         String lessonCode = (String) preparatoryLesson.get("code");
@@ -74,10 +80,10 @@ public class TranscriptFragment extends Fragment {
 
                         LinearLayout preparatoryLessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_lesson_layout, null);
 
-                        TextView lessonCodeTextView = (TextView)preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_code);
-                        TextView lessonNameTextView = (TextView)preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_name);
-                        TextView lessonMarkTextView = (TextView)preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_mark);
-                        TextView lessonCreditTextView = (TextView)preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_credit);
+                        TextView lessonCodeTextView = (TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_code);
+                        TextView lessonNameTextView = (TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_name);
+                        TextView lessonMarkTextView = (TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_mark);
+                        TextView lessonCreditTextView = (TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_credit);
 
                         lessonCodeTextView.setText(lessonCode);
                         lessonNameTextView.setText(lessonName);
@@ -87,7 +93,7 @@ public class TranscriptFragment extends Fragment {
                         preparatoryLessonsLinearLayout.addView(preparatoryLessonLayout);
                     }
 
-                    if(preparatoryLessons.length() > 0){
+                    if (preparatoryLessons.length() > 0) {
                         preparatoryLinearLayout.addView(preparatoryLayout);
                     }
 
@@ -109,7 +115,7 @@ public class TranscriptFragment extends Fragment {
 
                         semesterLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_layout, null);
 
-                        LinearLayout semesterLinearLayout = (LinearLayout)semesterLayout.findViewById(R.id.semester_linear_layout);
+                        LinearLayout semesterLinearLayout = (LinearLayout) semesterLayout.findViewById(R.id.semester_linear_layout);
 
                         TextView semesterNameTextView = (TextView) semesterLayout.findViewById(R.id.semester_name);
                         semesterNameTextView.setText(semesterName);
@@ -125,11 +131,11 @@ public class TranscriptFragment extends Fragment {
 
                             LinearLayout lessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lesson_layout, null);
 
-                            TextView lessonCodeTextView = (TextView)lessonLayout.findViewById(R.id.taken_lessons_lesson_code);
-                            TextView lessonNameTextView = (TextView)lessonLayout.findViewById(R.id.taken_lessons_lesson_name);
-                            TextView lessonMarkTextView = (TextView)lessonLayout.findViewById(R.id.taken_lessons_semester_mark);
-                            TextView lessonSupplementTextView = (TextView)lessonLayout.findViewById(R.id.taken_lessons_supplement);
-                            TextView lessonCreditTextView = (TextView)lessonLayout.findViewById(R.id.taken_lessons_lesson_credit);
+                            TextView lessonCodeTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_code);
+                            TextView lessonNameTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_name);
+                            TextView lessonMarkTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_semester_mark);
+                            TextView lessonSupplementTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_supplement);
+                            TextView lessonCreditTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_credit);
 
                             lessonCodeTextView.setText(lessonCode);
                             lessonNameTextView.setText(lessonName);
