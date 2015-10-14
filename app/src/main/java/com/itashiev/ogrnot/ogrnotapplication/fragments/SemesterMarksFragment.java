@@ -53,40 +53,44 @@ public class SemesterMarksFragment extends Fragment {
 
                 try {
 
-
+                    JSONArray lessons = response.getJSONArray("lessons");
+                    LinearLayout semestersLessonsMarksLinearLayout = (LinearLayout) inflate.findViewById(R.id.semester_lessons_marks);
                     ProgressBar semesterLessonsMarksProgressBar = (ProgressBar) inflate.findViewById(R.id.semester_lessons_marks_progressbar);
 
-                    JSONArray lessons = response.getJSONArray("lessons");
+                    if (lessons.length() > 0) {
+                        for (int i = 0; i < lessons.length(); i++) {
+                            JSONObject lesson = lessons.getJSONObject(i);
+                            JSONArray lessonExams = lesson.getJSONArray("exams");
 
-                    LinearLayout semestersLessonsMarksLinearLayout = (LinearLayout) inflate.findViewById(R.id.semester_lessons_marks);
+                            LinearLayout semesterLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_layout, null);
+                            LinearLayout semesterLinearLayout = (LinearLayout) semesterLayout.findViewById(R.id.lesson_marks_linear_layout);
 
-                    for (int i = 0; i < lessons.length(); i++) {
-                        JSONObject lesson = lessons.getJSONObject(i);
-                        JSONArray lessonExams = lesson.getJSONArray("exams");
+                            ((TextView) semesterLayout.findViewById(R.id.lesson_name)).setText(lesson.getString("name"));
 
-                        LinearLayout semesterLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_layout, null);
-                        LinearLayout semesterLinearLayout = (LinearLayout) semesterLayout.findViewById(R.id.lesson_marks_linear_layout);
+                            for (int j = 0; j < lessonExams.length(); j++) {
+                                JSONObject lessonExam = (JSONObject) lessonExams.get(j);
 
-                        ((TextView) semesterLayout.findViewById(R.id.lesson_name)).setText(lesson.getString("name"));
+                                LinearLayout examLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lesson_marks_layout, null);
 
-                        for (int j = 0; j < lessonExams.length(); j++) {
-                            JSONObject lessonExam = (JSONObject) lessonExams.get(j);
+                                ((TextView) examLinearLayout.findViewById(R.id.exam_name)).setText(lessonExam.getString("name"));
+                                ((TextView) examLinearLayout.findViewById(R.id.exam_mark)).setText(lessonExam.getString("mark"));
+                                ((TextView) examLinearLayout.findViewById(R.id.exam_avg)).setText(lessonExam.getString("avg"));
 
-                            LinearLayout examLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lesson_marks_layout, null);
+                                semesterLinearLayout.addView(examLinearLayout);
+                            }
 
-                            ((TextView) examLinearLayout.findViewById(R.id.exam_name)).setText(lessonExam.getString("name"));
-                            ((TextView) examLinearLayout.findViewById(R.id.exam_mark)).setText(lessonExam.getString("mark"));
-                            ((TextView) examLinearLayout.findViewById(R.id.exam_avg)).setText(lessonExam.getString("avg"));
-
-                            semesterLinearLayout.addView(examLinearLayout);
+                            semestersLessonsMarksLinearLayout.addView(semesterLayout);
                         }
 
-                        semestersLessonsMarksLinearLayout.addView(semesterLayout);
+
+                    } else {
+
+                        LinearLayout semesterMarksEmptyLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_empty_layout, null);
+                        semestersLessonsMarksLinearLayout.addView(semesterMarksEmptyLinearLayout);
                     }
 
-
-                    semesterLessonsMarksProgressBar.setVisibility(View.INVISIBLE);
                     semestersLessonsMarksLinearLayout.setVisibility(View.VISIBLE);
+                    semesterLessonsMarksProgressBar.setVisibility(View.INVISIBLE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

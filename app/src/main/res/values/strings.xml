@@ -56,4 +56,5 @@
     <string name="exam_description_tr">Açıklama</string>
     <string name="exam_mark_tr">Notu</string>
     <string name="exam_average_mark_tr">Ortalama</string>
+    <string name="semester_lessons_marks_empty">Ders notları açıklanmadı</string>
 </resources>
