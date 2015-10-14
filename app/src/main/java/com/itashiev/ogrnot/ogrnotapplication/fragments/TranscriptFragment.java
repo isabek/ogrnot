@@ -142,6 +142,7 @@ public class TranscriptFragment extends Fragment {
                             semesterLinearLayout.addView(lessonLayout);
                         }
 
+
                         String semesterGPA = (String) semester.get("gpa");
                         String semesterTotalCredit = (String) semester.get("totalCredit");
                         String semesterTotalAverage = (String) semester.get("totalAverage");
@@ -152,6 +153,15 @@ public class TranscriptFragment extends Fragment {
 
                         semestersLinearLayout.addView(semesterLayout);
                     }
+
+                    JSONObject general = undergraduate.getJSONObject("general");
+                    LinearLayout generalGPALayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.general_gpa_layout, null);
+
+                    ((TextView)generalGPALayout.findViewById(R.id.general_total_credit)).setText(general.getString("totalCredit"));
+                    ((TextView)generalGPALayout.findViewById(R.id.general_total_credit_default)).setText(general.getString("totalAverage"));
+                    ((TextView)generalGPALayout.findViewById(R.id.general_gpa)).setText(general.getString("gpa"));
+
+                    semestersLinearLayout.addView(generalGPALayout);
 
                     transcriptProgressBar.setVisibility(View.INVISIBLE);
                     semestersLinearLayout.setVisibility(View.VISIBLE);

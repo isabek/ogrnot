@@ -60,4 +60,5 @@
     <string name="semester_total_credit">Toplam Kr.</string>
     <string name="semester_total_credit_default">Toplam</string>
     <string name="semester_gpa">Ortalama</string>
+    <string name="general_gpa_tr">Genel Ortalama</string>
 </resources>
