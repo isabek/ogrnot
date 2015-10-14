@@ -54,6 +54,7 @@ public class TakenLessonsFragment extends Fragment {
 
                 try {
 
+                    LinearLayout studentTakenLessonsLinearLayout = (LinearLayout) inflate.findViewById(R.id.student_taken_lessons_layout);
                     LinearLayout studentLessonsLinearLayout = (LinearLayout) inflate.findViewById(R.id.student_taken_lessons);
                     ProgressBar studentTakenLessonsProgressBar = (ProgressBar) inflate.findViewById(R.id.student_taken_lessons_progressbar);
                     LinearLayout lessonLayout;
@@ -65,7 +66,7 @@ public class TakenLessonsFragment extends Fragment {
                         String lessonName = (String) lesson.get("name");
                         String lessonCredit = (String) lesson.get("credit");
 
-                        lessonLayout = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.lesson_layout, null);
+                        lessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.lesson_layout, null);
 
                         TextView lessonCodeTextView = (TextView) lessonLayout.getChildAt(0);
                         TextView lessonNameTextView = (TextView) lessonLayout.getChildAt(1);
@@ -78,7 +79,7 @@ public class TakenLessonsFragment extends Fragment {
                         studentLessonsLinearLayout.addView(lessonLayout);
                     }
 
-                    studentLessonsLinearLayout.setVisibility(View.VISIBLE);
+                    studentTakenLessonsLinearLayout.setVisibility(View.VISIBLE);
                     studentTakenLessonsProgressBar.setVisibility(View.INVISIBLE);
 
 

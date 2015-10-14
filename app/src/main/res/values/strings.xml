@@ -61,4 +61,5 @@
     <string name="semester_total_credit_default">Toplam</string>
     <string name="semester_gpa">Ortalama</string>
     <string name="general_gpa_tr">Genel Ortalama</string>
+    <string name="semester_lessons_title_tr">Bu Dönem Aldığınız Dersler</string>
 </resources>
