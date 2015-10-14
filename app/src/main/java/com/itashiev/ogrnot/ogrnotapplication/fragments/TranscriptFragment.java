@@ -141,6 +141,15 @@ public class TranscriptFragment extends Fragment {
 
                             semesterLinearLayout.addView(lessonLayout);
                         }
+
+                        String semesterGPA = (String) semester.get("gpa");
+                        String semesterTotalCredit = (String) semester.get("totalCredit");
+                        String semesterTotalAverage = (String) semester.get("totalAverage");
+
+                        ((TextView)semesterLayout.findViewById(R.id.semester_gpa)).setText(semesterGPA);
+                        ((TextView)semesterLayout.findViewById(R.id.semester_total_credit_default)).setText(semesterTotalAverage);
+                        ((TextView)semesterLayout.findViewById(R.id.semester_total_credit)).setText(semesterTotalCredit);
+
                         semestersLinearLayout.addView(semesterLayout);
                     }
 

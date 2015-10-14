@@ -31,7 +31,7 @@
     <string name="menu_icon_content_description">menu_icon_content_description</string>
     <string name="toolbar_right_icon">Icon to the right</string>
 
-    <string name="lesson_code_tr">Ders Kodu</string>
+    <string name="lesson_code_tr">Kodu</string>
     <string name="lesson_name_tr">Ders Adı</string>
     <string name="lesson_credit_tr">Kredisi</string>
 
@@ -57,4 +57,7 @@
     <string name="exam_mark_tr">Notu</string>
     <string name="exam_average_mark_tr">Ortalama</string>
     <string name="semester_lessons_marks_empty">Ders notları açıklanmadı</string>
+    <string name="semester_total_credit">Toplam Kr.</string>
+    <string name="semester_total_credit_default">Toplam</string>
+    <string name="semester_gpa">Ortalama</string>
 </resources>
