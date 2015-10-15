@@ -17,13 +17,10 @@
     <color name="pager_background">#F4F4F4</color>
     <color name="actionbar_background_start">#272727</color>
     <color name="actionbar_background_end">#1A1A1A</color>
-
-
     <color name="theme_default_primary">#536dfe</color>
     <color name="theme_default_primary_dark">#3f51b5</color>
     <color name="theme_accent">#ff4081</color>
     <color name="theme_window_background">#ECECEC</color>
-
     <!-- general text colors -->
     <color name="secondary">#727272</color>
     <color name="hint">#B8B8B8</color>
