@@ -51,8 +51,7 @@
                 android:completionThreshold="1"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:nextFocusDown="@+id/password"
-                android:text="1104.01003" />
+                android:nextFocusDown="@+id/password"/>
 
             <TextView
                 style="@style/ShadowText"
@@ -71,8 +70,7 @@
                 android:id="@+id/password"
                 style="@style/SignInEditText"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:text="12345" />
+                android:inputType="textPassword"/>
 
             <Button
                 android:id="@+id/button_sign_in"
