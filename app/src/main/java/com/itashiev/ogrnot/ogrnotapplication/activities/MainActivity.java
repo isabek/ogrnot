@@ -9,14 +9,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.MainMenuFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.PasswordFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.PersonalInfoFragment;
@@ -25,12 +23,6 @@ import com.itashiev.ogrnot.ogrnotapplication.fragments.TakenLessonsFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.TranscriptFragment;
 import com.itashiev.ogrnot.ogrnotapplication.menu.adapter.MenuDrawerListAdapter;
 import com.itashiev.ogrnot.ogrnotapplication.menu.model.MenuDrawerItem;
-import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

@@ -8,27 +8,23 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
+import com.itashiev.ogrnot.ogrnotapplication.model.authentication.Authentication;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
-
-    private EditText studentNumberEditTextView;
-    private EditText passwordEditTextView;
-
+public class LoginActivity extends Activity {
     private ProgressDialog progressDialog;
 
     @Override
@@ -36,54 +32,43 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        studentNumberEditTextView = (EditText) findViewById(R.id.student_number);
-        passwordEditTextView = (EditText) findViewById(R.id.password);
-        Button signInButtonView = (Button) findViewById(R.id.button_sign_in);
+        final EditText studentNumberEditTextView = (EditText) findViewById(R.id.student_number);
+        final EditText passwordEditTextView = (EditText) findViewById(R.id.password);
+        final Button signInButtonView = (Button) findViewById(R.id.button_sign_in);
+
+        final OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
 
         signInButtonView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String studentNumber = studentNumberEditTextView.getText().toString();
-                String password = passwordEditTextView.getText().toString();
-
-                RequestParams params = new RequestParams();
-                params.put("user", studentNumber);
-                params.put("pass", password);
-
                 initProgressDialog();
-                progressDialog.show();
 
-                OgrnotRestClient.post("authenticate", params, new JsonHttpResponseHandler() {
+                String user = studentNumberEditTextView.getText().toString();
+                String pass = passwordEditTextView.getText().toString();
 
+                apiService.authenticate(user, pass).enqueue(new Callback<Authentication>() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        try {
-                            String authKey = (String) response.get("authKey");
-                            AuthKeyStore.setAuthKey(getApplicationContext(), authKey);
-
+                    public void onResponse(Call<Authentication> call, retrofit2.Response<Authentication> response) {
+                        if (call.isExecuted() && response.isSuccessful()) {
                             progressDialog.dismiss();
-
+                            AuthKeyStore.setAuthKey(getApplicationContext(), response.body().getAuthKey());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
-
-                        } catch (JSONException e) {
-                            setMessageToProgressDialog(getString(R.string.authentication_auth_key_not_found));
+                        } else {
+                            setMessageToProgressDialog(getString(R.string.authentication_failed));
                         }
                     }
 
                     @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
+                    public void onFailure(Call<Authentication> call, Throwable t) {
                         setMessageToProgressDialog(getString(R.string.authentication_failed));
                     }
                 });
-
             }
         });
-
     }
 
-    private void setMessageToProgressDialog(String message){
+    private void setMessageToProgressDialog(String message) {
         progressDialog.setMessage(message);
 
         new Handler().postDelayed(new Runnable() {
@@ -94,25 +79,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }, 2000);
     }
 
-    private void initProgressDialog(){
+    private void initProgressDialog() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.authenticate));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
+        progressDialog.show();
     }
 }
 

@@ -12,19 +12,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
+import com.itashiev.ogrnot.ogrnotapplication.model.grade.Exam;
+import com.itashiev.ogrnot.ogrnotapplication.model.grade.Grade;
+import com.itashiev.ogrnot.ogrnotapplication.model.grade.Lesson;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SemesterMarksFragment extends Fragment {
 
-    View inflate;
+    private LinearLayout semestersLessonsMarksLinearLayout;
+    private ProgressBar semesterLessonsMarksProgressBar;
+
+    private static final String TAG = "SemesterMarksFragment";
 
     public SemesterMarksFragment() {
 
@@ -34,73 +38,64 @@ public class SemesterMarksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View inflate = inflater.inflate(R.layout.fragment_semester_marks, container, false);
+        semestersLessonsMarksLinearLayout = (LinearLayout) inflate.findViewById(R.id.semester_lessons_marks);
+        semesterLessonsMarksProgressBar = (ProgressBar) inflate.findViewById(R.id.semester_lessons_marks_progressbar);
 
-        inflate = inflater.inflate(R.layout.fragment_semester_marks, container, false);
-        getLessonsMarksFromAPI();
+        getLessonsMarksFromApi();
 
         return inflate;
     }
 
-    private void getLessonsMarksFromAPI() {
+    private void getLessonsMarksFromApi() {
+        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
+        String authKey = AuthKeyStore.getAuthKey(getActivity().getApplicationContext());
 
-        RequestParams params = new RequestParams();
-        params.put("authKey", AuthKeyStore.getAuthKey(getActivity().getApplicationContext()));
-
-        OgrnotRestClient.get("student-semester-notes", params, new JsonHttpResponseHandler() {
-
+        apiService.getGrade(authKey).enqueue(new Callback<Grade>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
-                try {
-
-                    JSONArray lessons = response.getJSONArray("lessons");
-                    LinearLayout semestersLessonsMarksLinearLayout = (LinearLayout) inflate.findViewById(R.id.semester_lessons_marks);
-                    ProgressBar semesterLessonsMarksProgressBar = (ProgressBar) inflate.findViewById(R.id.semester_lessons_marks_progressbar);
-
-                    if (lessons.length() > 0) {
-                        for (int i = 0; i < lessons.length(); i++) {
-                            JSONObject lesson = lessons.getJSONObject(i);
-                            JSONArray lessonExams = lesson.getJSONArray("exams");
-
-                            LinearLayout semesterLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_layout, null);
-                            LinearLayout semesterLinearLayout = (LinearLayout) semesterLayout.findViewById(R.id.lesson_marks_linear_layout);
-
-                            ((TextView) semesterLayout.findViewById(R.id.lesson_name)).setText(lesson.getString("name"));
-
-                            for (int j = 0; j < lessonExams.length(); j++) {
-                                JSONObject lessonExam = (JSONObject) lessonExams.get(j);
-
-                                LinearLayout examLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lesson_marks_layout, null);
-
-                                ((TextView) examLinearLayout.findViewById(R.id.exam_name)).setText(lessonExam.getString("name"));
-                                ((TextView) examLinearLayout.findViewById(R.id.exam_mark)).setText(lessonExam.getString("mark"));
-                                ((TextView) examLinearLayout.findViewById(R.id.exam_avg)).setText(lessonExam.getString("avg"));
-
-                                semesterLinearLayout.addView(examLinearLayout);
-                            }
-
-                            semestersLessonsMarksLinearLayout.addView(semesterLayout);
-                        }
-
-
-                    } else {
-
-                        LinearLayout semesterMarksEmptyLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_empty_layout, null);
-                        semestersLessonsMarksLinearLayout.addView(semesterMarksEmptyLinearLayout);
-                    }
-
-                    semestersLessonsMarksLinearLayout.setVisibility(View.VISIBLE);
-                    semesterLessonsMarksProgressBar.setVisibility(View.INVISIBLE);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void onResponse(Call<Grade> call, Response<Grade> response) {
+                if (call.isExecuted() && response.isSuccessful()) {
+                    Grade grade = response.body();
+                    fillExamsView(grade);
+                    Log.d(TAG, "onResponse: " + grade);
+                } else {
+                    Log.d(TAG, "onResponse: " + response.raw());
                 }
+
+                semestersLessonsMarksLinearLayout.setVisibility(View.VISIBLE);
+                semesterLessonsMarksProgressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-                Log.d("FAILURE", response.toString());
+            public void onFailure(Call<Grade> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });
+    }
+
+    private void fillExamsView(Grade grade) {
+        if (grade.getLessons() != null && grade.getLessons().size() > 0) {
+            for (Lesson lesson : grade.getLessons()) {
+                LinearLayout semesterLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_layout, null);
+                LinearLayout semesterLinearLayout = (LinearLayout) semesterLayout.findViewById(R.id.lesson_marks_linear_layout);
+
+                ((TextView) semesterLayout.findViewById(R.id.lesson_name)).setText(lesson.getName());
+
+                for (Exam exam : lesson.getExams()) {
+                    LinearLayout examLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lesson_marks_layout, null);
+
+                    ((TextView) examLinearLayout.findViewById(R.id.exam_name)).setText(exam.getName());
+                    ((TextView) examLinearLayout.findViewById(R.id.exam_mark)).setText(exam.getMark());
+                    ((TextView) examLinearLayout.findViewById(R.id.exam_avg)).setText(exam.getAvg());
+
+                    semesterLinearLayout.addView(examLinearLayout);
+                }
+                semestersLessonsMarksLinearLayout.addView(semesterLayout);
+            }
+
+        } else {
+            LinearLayout semesterMarksEmptyLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_empty_layout, null);
+            semestersLessonsMarksLinearLayout.addView(semesterMarksEmptyLinearLayout);
+        }
     }
 }

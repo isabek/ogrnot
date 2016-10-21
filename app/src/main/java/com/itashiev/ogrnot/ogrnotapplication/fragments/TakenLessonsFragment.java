@@ -12,19 +12,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
+import com.itashiev.ogrnot.ogrnotapplication.model.lesson.Lesson;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TakenLessonsFragment extends Fragment {
+    private LinearLayout studentTakenLessonsLinearLayout;
+    private LinearLayout studentLessonsLinearLayout;
+    private ProgressBar studentTakenLessonsProgressBar;
 
-    View inflate;
+    private static final String TAG = "TakenLessonsFragment";
 
     public TakenLessonsFragment() {
 
@@ -34,8 +38,12 @@ public class TakenLessonsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View inflate = inflater.inflate(R.layout.fragment_taken_lessons, container, false);
 
-        inflate = inflater.inflate(R.layout.fragment_taken_lessons, container, false);
+        studentTakenLessonsLinearLayout = (LinearLayout) inflate.findViewById(R.id.student_taken_lessons_layout);
+        studentLessonsLinearLayout = (LinearLayout) inflate.findViewById(R.id.student_taken_lessons);
+        studentTakenLessonsProgressBar = (ProgressBar) inflate.findViewById(R.id.student_taken_lessons_progressbar);
+
         getLessonsFromApi();
 
         return inflate;
@@ -43,58 +51,39 @@ public class TakenLessonsFragment extends Fragment {
 
     private void getLessonsFromApi() {
 
-        RequestParams params = new RequestParams();
-        params.put("authKey", AuthKeyStore.getAuthKey(getActivity().getApplicationContext()));
 
-        OgrnotRestClient.get("student-taken-lessons", params, new JsonHttpResponseHandler() {
-
-
+        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
+        String authKey = AuthKeyStore.getAuthKey(getActivity().getApplicationContext());
+        apiService.getLessons(authKey).enqueue(new Callback<List<Lesson>>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
+                if (call.isExecuted() && response.isSuccessful()) {
+                    List<Lesson> lessons = response.body();
+                    fillLessonsView(lessons);
 
-                try {
-
-                    LinearLayout studentTakenLessonsLinearLayout = (LinearLayout) inflate.findViewById(R.id.student_taken_lessons_layout);
-                    LinearLayout studentLessonsLinearLayout = (LinearLayout) inflate.findViewById(R.id.student_taken_lessons);
-                    ProgressBar studentTakenLessonsProgressBar = (ProgressBar) inflate.findViewById(R.id.student_taken_lessons_progressbar);
-                    LinearLayout lessonLayout;
-
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject lesson = response.getJSONObject(i);
-
-                        String lessonCode = (String) lesson.get("code");
-                        String lessonName = (String) lesson.get("name");
-                        String lessonCredit = (String) lesson.get("credit");
-
-                        lessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.lesson_layout, null);
-
-                        TextView lessonCodeTextView = (TextView) lessonLayout.getChildAt(0);
-                        TextView lessonNameTextView = (TextView) lessonLayout.getChildAt(1);
-                        TextView lessonCreditTextView = (TextView) lessonLayout.getChildAt(2);
-
-                        lessonCodeTextView.setText(lessonCode);
-                        lessonNameTextView.setText(lessonName);
-                        lessonCreditTextView.setText(lessonCredit);
-
-                        studentLessonsLinearLayout.addView(lessonLayout);
-                    }
-
-                    studentTakenLessonsLinearLayout.setVisibility(View.VISIBLE);
-                    studentTakenLessonsProgressBar.setVisibility(View.INVISIBLE);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.d(TAG, "onResponse: " + lessons);
+                } else {
+                    Log.d(TAG, "onResponse: " + response.raw());
                 }
 
+                studentTakenLessonsLinearLayout.setVisibility(View.VISIBLE);
+                studentTakenLessonsProgressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-                Log.d("FAILURE", response.toString());
+            public void onFailure(Call<List<Lesson>> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });
     }
 
-
+    private void fillLessonsView(List<Lesson> lessons) {
+        for (Lesson lesson : lessons) {
+            LinearLayout layout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.lesson_layout, null);
+            ((TextView) layout.findViewById(R.id.lesson_name)).setText(lesson.getName());
+            ((TextView) layout.findViewById(R.id.lesson_code)).setText(lesson.getCode());
+            ((TextView) layout.findViewById(R.id.lesson_credit)).setText(lesson.getCredit());
+            studentLessonsLinearLayout.addView(layout);
+        }
+    }
 }

@@ -13,20 +13,29 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
+import com.itashiev.ogrnot.ogrnotapplication.model.transcript.preparatory.Lesson;
+import com.itashiev.ogrnot.ogrnotapplication.model.transcript.Transcript;
+import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.General;
+import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.Semester;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TranscriptFragment extends Fragment {
-    View inflate;
 
     ProgressBar transcriptProgressBar;
+    private LinearLayout preparatoryLinearLayout;
+    private LinearLayout preparatoryLayout;
+    private LinearLayout preparatoryLessonsLinearLayout;
+    private LinearLayout preparatoryLessonLayout;
+    private LinearLayout semestersLinearLayout;
+    private LinearLayout generalGPALayout;
+
+    private static final String TAG = "TranscriptFragment";
 
     public TranscriptFragment() {
     }
@@ -35,7 +44,15 @@ public class TranscriptFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        inflate = inflater.inflate(R.layout.fragment_transcript, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_transcript, container, false);
+
+        preparatoryLinearLayout = (LinearLayout) inflate.findViewById(R.id.preparatory_linear_layout);
+        preparatoryLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_layout, null);
+        preparatoryLessonsLinearLayout = (LinearLayout) preparatoryLayout.findViewById(R.id.preparatory_lessons_linear_layout);
+        preparatoryLessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_lesson_layout, null);
+        semestersLinearLayout = (LinearLayout) inflate.findViewById(R.id.semesters_linear_layout);
+        generalGPALayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.general_gpa_layout, null);
+        transcriptProgressBar = (ProgressBar) inflate.findViewById(R.id.student_transcript_progressbar);
 
         getLessonsFromApi();
 
@@ -45,138 +62,85 @@ public class TranscriptFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        transcriptProgressBar = (ProgressBar) inflate.findViewById(R.id.student_transcript_progressbar);
     }
 
     private void getLessonsFromApi() {
+        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
+        String authKey = AuthKeyStore.getAuthKey(getActivity().getApplicationContext());
 
-        RequestParams params = new RequestParams();
-        params.put("authKey", AuthKeyStore.getAuthKey(getActivity().getApplicationContext()));
-
-        OgrnotRestClient.get("student-transcript", params, new JsonHttpResponseHandler() {
-
+        apiService.getTranscript(authKey).enqueue(new Callback<Transcript>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onResponse(Call<Transcript> call, Response<Transcript> response) {
+                if (call.isExecuted() && response.isSuccessful()) {
+                    Transcript transcript = response.body();
 
-                try {
-
-                    JSONObject preparatory = response.getJSONObject("preparatory");
-                    JSONArray preparatoryLessons = preparatory.getJSONArray("lessons");
-
-                    if (preparatoryLessons.length() > 0) {
-                        LinearLayout preparatoryLinearLayout = (LinearLayout) inflate.findViewById(R.id.preparatory_linear_layout);
-                        LinearLayout preparatoryLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_layout, null);
-                        LinearLayout preparatoryLessonsLinearLayout = (LinearLayout) preparatoryLayout.findViewById(R.id.preparatory_lessons_linear_layout);
-
-                        JSONObject preparatoryLesson;
-                        for (int i = 0; i < preparatoryLessons.length(); i++) {
-                            preparatoryLesson = preparatoryLessons.getJSONObject(i);
-
-                            String lessonCode = (String) preparatoryLesson.get("code");
-                            String lessonName = (String) preparatoryLesson.get("name");
-                            String lessonMark = (String) preparatoryLesson.get("mark");
-                            String lessonCredit = (String) preparatoryLesson.get("credit");
-
-                            LinearLayout preparatoryLessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_lesson_layout, null);
-
-                            TextView lessonCodeTextView = (TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_code);
-                            TextView lessonNameTextView = (TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_name);
-                            TextView lessonMarkTextView = (TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_mark);
-                            TextView lessonCreditTextView = (TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_credit);
-
-                            lessonCodeTextView.setText(lessonCode);
-                            lessonNameTextView.setText(lessonName);
-                            lessonMarkTextView.setText(lessonMark);
-                            lessonCreditTextView.setText(lessonCredit);
-
-                            preparatoryLessonsLinearLayout.addView(preparatoryLessonLayout);
-                        }
-                        preparatoryLinearLayout.addView(preparatoryLayout);
-                    }
-
-                    LinearLayout semestersLinearLayout = (LinearLayout) inflate.findViewById(R.id.semesters_linear_layout);
-                    LinearLayout semesterLayout;
-                    JSONObject undergraduate = response.getJSONObject("undergraduate");
-                    JSONArray semesters = undergraduate.getJSONArray("semesters");
-                    JSONObject semester;
-
-                    for (int i = 0; i < semesters.length(); i++) {
-
-                        semester = (JSONObject) semesters.get(i);
-
-                        String semesterName = (String) semester.get("name");
-
-                        JSONArray lessons = semester.getJSONArray("lessons");
-                        JSONObject lesson;
-
-                        semesterLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_layout, null);
-
-                        LinearLayout semesterLinearLayout = (LinearLayout) semesterLayout.findViewById(R.id.semester_linear_layout);
-
-                        TextView semesterNameTextView = (TextView) semesterLayout.findViewById(R.id.semester_name);
-                        semesterNameTextView.setText(semesterName);
-
-                        for (int j = 0; j < lessons.length(); j++) {
-                            lesson = lessons.getJSONObject(j);
-
-                            String lessonCode = (String) lesson.get("code");
-                            String lessonName = (String) lesson.get("name");
-                            String lessonMark = (String) lesson.get("mark");
-                            String lessonCredit = (String) lesson.get("credit");
-                            String lessonSupplement = (String) lesson.get("supplement");
-
-                            LinearLayout lessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lesson_layout, null);
-
-                            TextView lessonCodeTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_code);
-                            TextView lessonNameTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_name);
-                            TextView lessonMarkTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_semester_mark);
-                            TextView lessonSupplementTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_supplement);
-                            TextView lessonCreditTextView = (TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_credit);
-
-                            lessonCodeTextView.setText(lessonCode);
-                            lessonNameTextView.setText(lessonName);
-                            lessonMarkTextView.setText(lessonMark);
-                            lessonCreditTextView.setText(lessonCredit);
-                            lessonSupplementTextView.setText(lessonSupplement);
-
-                            semesterLinearLayout.addView(lessonLayout);
-                        }
-
-
-                        String semesterGPA = (String) semester.get("gpa");
-                        String semesterTotalCredit = (String) semester.get("totalCredit");
-                        String semesterTotalAverage = (String) semester.get("totalAverage");
-
-                        ((TextView)semesterLayout.findViewById(R.id.semester_gpa)).setText(semesterGPA);
-                        ((TextView)semesterLayout.findViewById(R.id.semester_total_credit_default)).setText(semesterTotalAverage);
-                        ((TextView)semesterLayout.findViewById(R.id.semester_total_credit)).setText(semesterTotalCredit);
-
-                        semestersLinearLayout.addView(semesterLayout);
-                    }
-
-                    JSONObject general = undergraduate.getJSONObject("general");
-                    LinearLayout generalGPALayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.general_gpa_layout, null);
-
-                    ((TextView)generalGPALayout.findViewById(R.id.general_total_credit)).setText(general.getString("totalCredit"));
-                    ((TextView)generalGPALayout.findViewById(R.id.general_total_credit_default)).setText(general.getString("totalAverage"));
-                    ((TextView)generalGPALayout.findViewById(R.id.general_gpa)).setText(general.getString("gpa"));
-
-                    semestersLinearLayout.addView(generalGPALayout);
+                    fillPreparatoryView(transcript);
+                    fillUndergraduateView(transcript);
+                    fillGpaView(transcript);
 
                     transcriptProgressBar.setVisibility(View.INVISIBLE);
                     semestersLinearLayout.setVisibility(View.VISIBLE);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.d(TAG, "onResponse: " + transcript);
+                } else {
+                    Log.d(TAG, "onResponse: " + response.raw());
                 }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-                Log.d("FAILURE", response.toString());
+            public void onFailure(Call<Transcript> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + call.request(), t);
             }
         });
     }
 
+    private void fillGpaView(Transcript transcript) {
+        if (transcript.getUndergraduate() != null && transcript.getUndergraduate().getGeneral() != null) {
+            General general = transcript.getUndergraduate().getGeneral();
+            ((TextView) generalGPALayout.findViewById(R.id.general_total_credit)).setText(general.getTotalCredit());
+            ((TextView) generalGPALayout.findViewById(R.id.general_total_credit_default)).setText(general.getTotalAverage());
+            ((TextView) generalGPALayout.findViewById(R.id.general_gpa)).setText(general.getGpa());
+            semestersLinearLayout.addView(generalGPALayout);
+        }
+    }
+
+    private void fillUndergraduateView(Transcript transcript) {
+        if (transcript.getUndergraduate() != null && transcript.getUndergraduate().getSemesters() != null) {
+            for (Semester semester : transcript.getUndergraduate().getSemesters()) {
+                LinearLayout semesterLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_layout, null);
+                LinearLayout semesterLinearLayout = (LinearLayout) semesterLayout.findViewById(R.id.semester_linear_layout);
+                ((TextView) semesterLayout.findViewById(R.id.semester_name)).setText(semester.getName());
+
+                for (com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.Lesson lesson : semester.getLessons()) {
+                    LinearLayout lessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lesson_layout, null);
+                    ((TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_code)).setText(lesson.getCode());
+                    ((TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_name)).setText(lesson.getName());
+                    ((TextView) lessonLayout.findViewById(R.id.taken_lessons_semester_mark)).setText(lesson.getMark());
+                    ((TextView) lessonLayout.findViewById(R.id.taken_lessons_supplement)).setText(lesson.getSupplement());
+                    ((TextView) lessonLayout.findViewById(R.id.taken_lessons_lesson_credit)).setText(lesson.getCredit());
+                    semesterLinearLayout.addView(lessonLayout);
+                }
+
+                ((TextView) semesterLayout.findViewById(R.id.semester_gpa)).setText(semester.getGpa());
+                ((TextView) semesterLayout.findViewById(R.id.semester_total_credit_default)).setText(semester.getTotalAverage());
+                ((TextView) semesterLayout.findViewById(R.id.semester_total_credit)).setText(semester.getTotalCredit());
+
+                semestersLinearLayout.addView(semesterLayout);
+            }
+        }
+    }
+
+    private void fillPreparatoryView(Transcript transcript) {
+        if (transcript.getPreparatory() != null && transcript.getPreparatory().getLessons() != null) {
+            for (Lesson lesson : transcript.getPreparatory().getLessons()) {
+                ((TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_code)).setText(lesson.getCode());
+                ((TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_name)).setText(lesson.getName());
+                ((TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_mark)).setText(lesson.getMark());
+                ((TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_credit)).setText(lesson.getCredit());
+                preparatoryLessonsLinearLayout.addView(preparatoryLessonLayout);
+            }
+            preparatoryLinearLayout.addView(preparatoryLayout);
+        }
+    }
 
 }

@@ -11,23 +11,26 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
+import com.itashiev.ogrnot.ogrnotapplication.model.info.MainInfo;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainMenuFragment extends Fragment {
+
 
     TextView studentNumberTextView;
     TextView facultyTextView;
     TextView departmentTextView;
     LinearLayout mainMenuLinearLayout;
     ProgressBar mainMenuProgressBar;
+
+    private static final String TAG = "MainMenuFragment";
 
     public MainMenuFragment() {
 
@@ -42,49 +45,42 @@ public class MainMenuFragment extends Fragment {
         studentNumberTextView = (TextView) inflate.findViewById(R.id.student_number);
         facultyTextView = (TextView) inflate.findViewById(R.id.faculty);
         departmentTextView = (TextView) inflate.findViewById(R.id.department);
-
-        mainMenuLinearLayout = (LinearLayout)inflate.findViewById(R.id.main_menu_linear_layout);
-        mainMenuProgressBar = (ProgressBar)inflate.findViewById(R.id.main_menu_progressbar);
+        mainMenuLinearLayout = (LinearLayout) inflate.findViewById(R.id.main_menu_linear_layout);
+        mainMenuProgressBar = (ProgressBar) inflate.findViewById(R.id.main_menu_progressbar);
 
         getDataFromApi();
 
         return inflate;
     }
 
-    public void setDataToElements(String studentNumber, String faculty, String department) {
-
-        studentNumberTextView.setText(studentNumber);
-        facultyTextView.setText(faculty);
-        departmentTextView.setText(department);
-    }
-
     private void getDataFromApi() {
-
-        RequestParams params = new RequestParams();
-        params.put("authKey", AuthKeyStore.getAuthKey(getActivity().getApplicationContext()));
-
-        OgrnotRestClient.get("main-info", params, new JsonHttpResponseHandler() {
-
+        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
+        String authKey = AuthKeyStore.getAuthKey(getActivity().getApplicationContext());
+        apiService.getMainInfo(authKey).enqueue(new Callback<MainInfo>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    String number = (String) response.get("number");
-                    String faculty = (String) response.get("faculty");
-                    String department = (String) response.get("department");
-                    setDataToElements(number, faculty, department);
+            public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
+                if (call.isExecuted() && response.isSuccessful()) {
+                    MainInfo mainInfo = response.body();
+                    fillView(mainInfo);
+                    Log.d(TAG, "onResponse: " + mainInfo);
 
-                    mainMenuProgressBar.setVisibility(View.INVISIBLE);
-                    mainMenuLinearLayout.setVisibility(View.VISIBLE);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    Log.d(TAG, "onResponse: " + response.raw());
                 }
+                mainMenuProgressBar.setVisibility(View.INVISIBLE);
+                mainMenuLinearLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-                Log.d("FAILURE", response.toString());
+            public void onFailure(Call<MainInfo> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });
+    }
+    
+    private void fillView(MainInfo mainInfo) {
+        studentNumberTextView.setText(mainInfo.getNumber());
+        facultyTextView.setText(mainInfo.getFaculty());
+        departmentTextView.setText(mainInfo.getDepartment());
     }
 }

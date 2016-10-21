@@ -13,15 +13,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.RESTClient.OgrnotRestClient;
+import com.itashiev.ogrnot.ogrnotapplication.model.student.Student;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
+import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class PersonalInfoFragment extends Fragment {
@@ -39,6 +39,8 @@ public class PersonalInfoFragment extends Fragment {
     RelativeLayout personaInfoRelativeLayout;
     ProgressBar personalInfoProgressBar;
 
+    private static final String TAG = "PersonalInfoFragment";
+
     public PersonalInfoFragment() {
 
     }
@@ -51,7 +53,6 @@ public class PersonalInfoFragment extends Fragment {
 
         personaInfoRelativeLayout = (RelativeLayout) inflate.findViewById(R.id.personal_info_relative_layout);
         personalInfoProgressBar = (ProgressBar) inflate.findViewById(R.id.personal_info_progressbar);
-
 
         studentNumberTextView = (TextView) inflate.findViewById(R.id.student_number);
         nameTextView = (TextView) inflate.findViewById(R.id.student_name);
@@ -68,60 +69,50 @@ public class PersonalInfoFragment extends Fragment {
         return inflate;
     }
 
-    private void setDataToElements(String number, String name, String surname, String birthplace, String birthday, String father, String mother, String nationality, String url){
-
-        studentNumberTextView.setText(number);
-        nameTextView.setText(name);
-        surnameTextView.setText(surname);
-        birthplaceTextView.setText(birthplace);
-        birthdayTextView.setText(birthday);
-        fatherTextView.setText(father);
-        motherTextView.setText(mother);
-        nationalityTextView.setText(nationality);
-
-        loadImage(url);
-    }
-
-    private void loadImage(String url){
-        Picasso.with(getActivity().getApplicationContext()).load(url).into(photoImageView);
-    }
-
     private void getDataFromApi() {
-
-        RequestParams params = new RequestParams();
-        params.put("authKey", AuthKeyStore.getAuthKey(getActivity().getApplicationContext()));
-
-        OgrnotRestClient.get("student-info", params, new JsonHttpResponseHandler() {
-
+        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
+        String authKey = AuthKeyStore.getAuthKey(getActivity().getApplicationContext());
+        apiService.getStudentInfo(authKey).enqueue(new Callback<Student>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onResponse(Call<Student> call, Response<Student> response) {
+                if (call.isExecuted() && response.isSuccessful()) {
+                    Student studentInfo = response.body();
+                    fillView(studentInfo);
+                    Log.d(TAG, "onResponse: " + studentInfo);
 
-                try {
-                    String number = (String) response.get("number");
-                    String name = (String) response.get("name");
-                    String surname = (String) response.get("surname");
-                    String birthplace = (String) response.get("birthplace");
-                    String birthday = (String) response.get("birthday");
-                    String father = (String) response.get("father");
-                    String mother = (String) response.get("mother");
-                    String nationality = (String) response.get("nationality");
-                    String url = (String) response.get("photo");
-
-                    setDataToElements(number, name, surname, birthplace, birthday, father, mother, nationality, url);
-
-                    personaInfoRelativeLayout.setVisibility(View.VISIBLE);
-                    personalInfoProgressBar.setVisibility(View.INVISIBLE);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    Log.d(TAG, "onResponse: " + response.raw());
                 }
+                personaInfoRelativeLayout.setVisibility(View.VISIBLE);
+                personalInfoProgressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-                Log.d("FAILURE", response.toString());
+            public void onFailure(Call<Student> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });
     }
+
+    private void fillView(Student studentInfo) {
+        studentNumberTextView.setText(studentInfo.getNumber());
+        nameTextView.setText(studentInfo.getName());
+        surnameTextView.setText(studentInfo.getSurname());
+        birthplaceTextView.setText(studentInfo.getBirthplace());
+        birthdayTextView.setText(studentInfo.getBirthday());
+        fatherTextView.setText(studentInfo.getFather());
+        motherTextView.setText(studentInfo.getMother());
+        nationalityTextView.setText(studentInfo.getNationality());
+        loadImage(studentInfo.getPhotoUrl());
+    }
+
+    private void loadImage(String url) {
+        try {
+            Picasso.with(getActivity().getApplicationContext()).load(url).into(photoImageView);
+        } catch (Exception ex) {
+            Log.e(TAG, "Exception: " + ex.getMessage());
+        }
+    }
+
 
 }
