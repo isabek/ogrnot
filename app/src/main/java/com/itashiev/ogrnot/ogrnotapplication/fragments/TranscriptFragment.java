@@ -2,7 +2,6 @@ package com.itashiev.ogrnot.ogrnotapplication.fragments;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,11 +20,13 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 
+import org.apache.http.HttpStatus;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TranscriptFragment extends Fragment {
+public class TranscriptFragment extends HelperFragment {
 
     ProgressBar transcriptProgressBar;
     private LinearLayout preparatoryLinearLayout;
@@ -71,6 +72,11 @@ public class TranscriptFragment extends Fragment {
         apiService.getTranscript(authKey).enqueue(new Callback<Transcript>() {
             @Override
             public void onResponse(Call<Transcript> call, Response<Transcript> response) {
+                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                    startLoginActivity();
+                    return;
+                }
+
                 if (call.isExecuted() && response.isSuccessful()) {
                     Transcript transcript = response.body();
 

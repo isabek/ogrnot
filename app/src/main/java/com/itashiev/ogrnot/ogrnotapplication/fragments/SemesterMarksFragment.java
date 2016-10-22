@@ -2,7 +2,6 @@ package com.itashiev.ogrnot.ogrnotapplication.fragments;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +18,13 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 
+import org.apache.http.HttpStatus;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SemesterMarksFragment extends Fragment {
+public class SemesterMarksFragment extends HelperFragment {
 
     private LinearLayout semestersLessonsMarksLinearLayout;
     private ProgressBar semesterLessonsMarksProgressBar;
@@ -54,6 +55,11 @@ public class SemesterMarksFragment extends Fragment {
         apiService.getGrade(authKey).enqueue(new Callback<Grade>() {
             @Override
             public void onResponse(Call<Grade> call, Response<Grade> response) {
+                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                    startLoginActivity();
+                    return;
+                }
+
                 if (call.isExecuted() && response.isSuccessful()) {
                     Grade grade = response.body();
                     fillExamsView(grade);

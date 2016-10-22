@@ -1,7 +1,6 @@
 package com.itashiev.ogrnot.ogrnotapplication.fragments;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +18,14 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.HttpStatus;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PersonalInfoFragment extends Fragment {
+public class PersonalInfoFragment extends HelperFragment {
 
     TextView studentNumberTextView;
     TextView nameTextView;
@@ -75,6 +76,11 @@ public class PersonalInfoFragment extends Fragment {
         apiService.getStudentInfo(authKey).enqueue(new Callback<Student>() {
             @Override
             public void onResponse(Call<Student> call, Response<Student> response) {
+                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                    startLoginActivity();
+                    return;
+                }
+
                 if (call.isExecuted() && response.isSuccessful()) {
                     Student studentInfo = response.body();
                     fillView(studentInfo);

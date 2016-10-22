@@ -1,6 +1,5 @@
 package com.itashiev.ogrnot.ogrnotapplication.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,12 +15,14 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 
+import org.apache.http.HttpStatus;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainMenuFragment extends Fragment {
+public class MainMenuFragment extends HelperFragment {
 
 
     TextView studentNumberTextView;
@@ -59,6 +60,11 @@ public class MainMenuFragment extends Fragment {
         apiService.getMainInfo(authKey).enqueue(new Callback<MainInfo>() {
             @Override
             public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
+                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                    startLoginActivity();
+                    return;
+                }
+
                 if (call.isExecuted() && response.isSuccessful()) {
                     MainInfo mainInfo = response.body();
                     fillView(mainInfo);
@@ -77,7 +83,7 @@ public class MainMenuFragment extends Fragment {
             }
         });
     }
-    
+
     private void fillView(MainInfo mainInfo) {
         studentNumberTextView.setText(mainInfo.getNumber());
         facultyTextView.setText(mainInfo.getFaculty());
