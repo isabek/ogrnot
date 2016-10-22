@@ -18,7 +18,7 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,7 +55,7 @@ public class SemesterMarksFragment extends HelperFragment {
         apiService.getGrade(authKey).enqueue(new Callback<Grade>() {
             @Override
             public void onResponse(Call<Grade> call, Response<Grade> response) {
-                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     startLoginActivity();
                     return;
                 }

@@ -1,14 +1,10 @@
 package com.itashiev.ogrnot.ogrnotapplication.activities;
 
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +17,7 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,7 +66,7 @@ public class LoginActivity extends Activity {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     finish();
                     startActivity(intent);
-                } else if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     setMessageToProgressDialog(getString(R.string.wrong_credentials));
                 } else {
                     setMessageToProgressDialog(getString(R.string.authentication_failed));

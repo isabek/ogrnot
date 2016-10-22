@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+
+    compileSdkVersion 24
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         applicationId "com.itashiev.ogrnot.ogrnotapplication"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -32,10 +33,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.android.gms:play-services:6.5.87'
-    compile 'com.loopj.android:android-async-http:1.4.6'
-    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.1.0'

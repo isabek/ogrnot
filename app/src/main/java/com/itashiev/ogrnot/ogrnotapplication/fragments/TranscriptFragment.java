@@ -12,15 +12,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.model.transcript.preparatory.Lesson;
 import com.itashiev.ogrnot.ogrnotapplication.model.transcript.Transcript;
+import com.itashiev.ogrnot.ogrnotapplication.model.transcript.preparatory.Lesson;
 import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.General;
 import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.Semester;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,7 +70,7 @@ public class TranscriptFragment extends HelperFragment {
         apiService.getTranscript(authKey).enqueue(new Callback<Transcript>() {
             @Override
             public void onResponse(Call<Transcript> call, Response<Transcript> response) {
-                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     startLoginActivity();
                     return;
                 }

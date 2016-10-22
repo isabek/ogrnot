@@ -15,7 +15,7 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 
-import org.apache.http.HttpStatus;
+import java.net.HttpURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,7 +60,7 @@ public class MainMenuFragment extends HelperFragment {
         apiService.getMainInfo(authKey).enqueue(new Callback<MainInfo>() {
             @Override
             public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
-                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     startLoginActivity();
                     return;
                 }

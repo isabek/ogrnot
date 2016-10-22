@@ -16,8 +16,7 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 
-import org.apache.http.HttpStatus;
-
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,7 +57,7 @@ public class TakenLessonsFragment extends HelperFragment {
         apiService.getLessons(authKey).enqueue(new Callback<List<Lesson>>() {
             @Override
             public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
-                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     startLoginActivity();
                     return;
                 }

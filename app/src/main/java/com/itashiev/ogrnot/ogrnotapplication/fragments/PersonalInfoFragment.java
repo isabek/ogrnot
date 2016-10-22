@@ -18,7 +18,8 @@ import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpStatus;
+
+import java.net.HttpURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,7 +77,7 @@ public class PersonalInfoFragment extends HelperFragment {
         apiService.getStudentInfo(authKey).enqueue(new Callback<Student>() {
             @Override
             public void onResponse(Call<Student> call, Response<Student> response) {
-                if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
+                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     startLoginActivity();
                     return;
                 }
