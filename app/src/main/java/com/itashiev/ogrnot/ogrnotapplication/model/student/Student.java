@@ -3,6 +3,10 @@ package com.itashiev.ogrnot.ogrnotapplication.model.student;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.text.MessageFormat;
+
 public class Student {
     private String number;
     private String name;
@@ -101,5 +105,14 @@ public class Student {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public String getFullName() {
+        return MessageFormat.format("{0} {1}", name, surname);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

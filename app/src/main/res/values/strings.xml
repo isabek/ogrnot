@@ -5,13 +5,6 @@
     <string name="label_password">Şifre</string>
     <string name="label_sign_in">Giriş</string>
     <string name="logo_content_description">Logo</string>
-    <string-array name="menu_array">
-        <item>Ana Menü</item>
-        <item>Kişisel Bilgiler</item>
-        <item>Aldığı Dersler</item>
-        <item>Dönemlik Notlar</item>
-        <item>Transkript</item>
-    </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="toolbar_right_icon">Icon to the right</string>
@@ -48,4 +41,9 @@
     <string name="semester_gpa">Ortalama</string>
     <string name="general_gpa_tr">Genel Ortalama</string>
     <string name="semester_lessons_title_tr">Bu Dönem Aldığınız Dersler</string>
+    <string name="main_menu_item">Ana Menü</string>
+    <string name="personal_info_item">Kişisel Bilgiler</string>
+    <string name="taken_lessons_item">Aldığı Dersler</string>
+    <string name="semester_marks_item">Dönemlik Notlar</string>
+    <string name="transcript_menu_item">Transkript</string>
 </resources>
