@@ -32,7 +32,6 @@ public class TranscriptFragment extends HelperFragment {
     private LinearLayout preparatoryLinearLayout;
     private LinearLayout preparatoryLayout;
     private LinearLayout preparatoryLessonsLinearLayout;
-    private LinearLayout preparatoryLessonLayout;
     private LinearLayout semestersLinearLayout;
     private LinearLayout generalGPALayout;
 
@@ -50,7 +49,6 @@ public class TranscriptFragment extends HelperFragment {
         preparatoryLinearLayout = (LinearLayout) inflate.findViewById(R.id.preparatory_linear_layout);
         preparatoryLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_layout, null);
         preparatoryLessonsLinearLayout = (LinearLayout) preparatoryLayout.findViewById(R.id.preparatory_lessons_linear_layout);
-        preparatoryLessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_lesson_layout, null);
         semestersLinearLayout = (LinearLayout) inflate.findViewById(R.id.semesters_linear_layout);
         generalGPALayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.general_gpa_layout, null);
         transcriptProgressBar = (ProgressBar) inflate.findViewById(R.id.student_transcript_progressbar);
@@ -141,6 +139,7 @@ public class TranscriptFragment extends HelperFragment {
     private void fillPreparatoryView(Transcript transcript) {
         if (transcript.getPreparatory() != null && transcript.getPreparatory().getLessons() != null) {
             for (Lesson lesson : transcript.getPreparatory().getLessons()) {
+                LinearLayout preparatoryLessonLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.preparatory_lesson_layout, null);
                 ((TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_code)).setText(lesson.getCode());
                 ((TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_name)).setText(lesson.getName());
                 ((TextView) preparatoryLessonLayout.findViewById(R.id.preparatory_lesson_mark)).setText(lesson.getMark());
