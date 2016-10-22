@@ -51,7 +51,6 @@
                 android:completionThreshold="1"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:text="1504.01005"
                 android:nextFocusDown="@+id/password"/>
 
             <TextView
@@ -70,7 +69,6 @@
             <EditText
                 android:id="@+id/password"
                 style="@style/SignInEditText"
-                android:text="1105"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"/>
 
