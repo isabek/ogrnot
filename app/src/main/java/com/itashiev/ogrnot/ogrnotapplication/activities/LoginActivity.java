@@ -68,6 +68,7 @@ public class LoginActivity extends Activity {
                     progressDialog.dismiss();
                     AuthKeyStore.setAuthKey(getApplicationContext(), response.body().getAuthKey());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    finish();
                     startActivity(intent);
                 } else if (response.code() == HttpStatus.SC_UNAUTHORIZED) {
                     setMessageToProgressDialog(getString(R.string.wrong_credentials));
