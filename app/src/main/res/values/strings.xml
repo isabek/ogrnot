@@ -17,6 +17,8 @@
     <string name="toolbar_right_icon">Icon to the right</string>
     <string name="authenticate">Giriş yapılıyor</string>
     <string name="authentication_failed">Giriş yapılmadı</string>
+    <string name="no_internet_connection">İnternet bağlantısı yok</string>
+    <string name="wrong_credentials">Yanlış numara veya şifre</string>
     <string name="authentication_auth_key_not_found">Lütfen tekrar deneyiniz</string>
     <string name="lesson_code_tr">Kodu</string>
     <string name="lesson_name_tr">Ders Adı</string>
