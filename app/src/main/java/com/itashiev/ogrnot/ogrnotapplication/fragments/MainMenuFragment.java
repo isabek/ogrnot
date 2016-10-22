@@ -79,6 +79,8 @@ public class MainMenuFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<MainInfo> call, Throwable t) {
+                mainMenuProgressBar.setVisibility(View.INVISIBLE);
+                showNoInternetConnectionToast();
                 Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });

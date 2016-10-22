@@ -78,6 +78,8 @@ public class TakenLessonsFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<List<Lesson>> call, Throwable t) {
+                studentTakenLessonsProgressBar.setVisibility(View.INVISIBLE);
+                showNoInternetConnectionToast();
                 Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });

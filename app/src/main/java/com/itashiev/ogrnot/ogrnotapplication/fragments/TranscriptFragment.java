@@ -95,6 +95,8 @@ public class TranscriptFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<Transcript> call, Throwable t) {
+                transcriptProgressBar.setVisibility(View.INVISIBLE);
+                showNoInternetConnectionToast();
                 Log.d(TAG, "onFailure: " + call.request(), t);
             }
         });

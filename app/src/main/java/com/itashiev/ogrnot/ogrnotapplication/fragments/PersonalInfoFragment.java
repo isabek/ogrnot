@@ -95,6 +95,8 @@ public class PersonalInfoFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<Student> call, Throwable t) {
+                personalInfoProgressBar.setVisibility(View.INVISIBLE);
+                showNoInternetConnectionToast();
                 Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });

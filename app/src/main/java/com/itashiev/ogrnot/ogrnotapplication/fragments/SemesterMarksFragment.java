@@ -74,6 +74,8 @@ public class SemesterMarksFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<Grade> call, Throwable t) {
+                semesterLessonsMarksProgressBar.setVisibility(View.INVISIBLE);
+                showNoInternetConnectionToast();
                 Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });
