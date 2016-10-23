@@ -46,4 +46,5 @@
     <string name="taken_lessons_item">Aldığı Dersler</string>
     <string name="semester_marks_item">Dönemlik Notlar</string>
     <string name="transcript_menu_item">Transkript</string>
+    <string name="logout">Çıkış Yap</string>
 </resources>
