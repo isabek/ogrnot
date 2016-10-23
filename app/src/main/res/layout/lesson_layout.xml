@@ -1,45 +1,74 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:weightSum="10">
+    android:gravity="center_horizontal">
 
-    <TextView
-        android:id="@+id/lesson_code"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2.4"
-        android:gravity="right"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:textColor="#48484a"
-        android:textSize="16sp"
-        android:textStyle="normal" />
+    <android.support.v7.widget.CardView
+        android:id="@+id/lesson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/lesson_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="6"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingTop="10dp"
-        android:textColor="#48484a"
-        android:textSize="16sp"
-        android:textStyle="normal" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/lesson_credit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:layout_weight="1.8"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:textColor="#48484a"
-        android:textSize="16sp"
-        android:textStyle="normal" />
+            <TextView
+                android:id="@+id/lesson_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="8dp"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/lesson_code_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="3dp"
+                    android:paddingTop="4dp"
+                    android:text="Ders Kodu:"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/lesson_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/lesson_credit_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/lesson_credit_tr"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/lesson_credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

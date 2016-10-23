@@ -2,6 +2,8 @@ package com.itashiev.ogrnot.ogrnotapplication.fragments;
 
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
+import com.itashiev.ogrnot.ogrnotapplication.adapter.LessonAdapter;
 import com.itashiev.ogrnot.ogrnotapplication.model.lesson.Lesson;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
@@ -24,9 +27,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TakenLessonsFragment extends HelperFragment {
-    private LinearLayout studentTakenLessonsLinearLayout;
-    private LinearLayout studentLessonsLinearLayout;
     private ProgressBar studentTakenLessonsProgressBar;
+    RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager manager;
+    private RecyclerView recyclerView;
+    private View inflate;
 
     private static final String TAG = "TakenLessonsFragment";
 
@@ -38,11 +43,10 @@ public class TakenLessonsFragment extends HelperFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.fragment_taken_lessons, container, false);
-
-        studentTakenLessonsLinearLayout = (LinearLayout) inflate.findViewById(R.id.student_taken_lessons_layout);
-        studentLessonsLinearLayout = (LinearLayout) inflate.findViewById(R.id.student_taken_lessons);
+        inflate = inflater.inflate(R.layout.fragment_taken_lessons, container, false);
         studentTakenLessonsProgressBar = (ProgressBar) inflate.findViewById(R.id.student_taken_lessons_progressbar);
+        recyclerView = (RecyclerView) inflate.findViewById(R.id.student_taken_lessons_recycler_view);
+        manager = new LinearLayoutManager(getActivity().getApplicationContext());
 
         getLessonsFromApi();
 
@@ -71,7 +75,6 @@ public class TakenLessonsFragment extends HelperFragment {
                     Log.d(TAG, "onResponse: " + response.raw());
                 }
 
-                studentTakenLessonsLinearLayout.setVisibility(View.VISIBLE);
                 studentTakenLessonsProgressBar.setVisibility(View.INVISIBLE);
             }
 
@@ -85,12 +88,8 @@ public class TakenLessonsFragment extends HelperFragment {
     }
 
     private void fillLessonsView(List<Lesson> lessons) {
-        for (Lesson lesson : lessons) {
-            LinearLayout layout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.lesson_layout, null);
-            ((TextView) layout.findViewById(R.id.lesson_name)).setText(lesson.getName());
-            ((TextView) layout.findViewById(R.id.lesson_code)).setText(lesson.getCode());
-            ((TextView) layout.findViewById(R.id.lesson_credit)).setText(lesson.getCredit());
-            studentLessonsLinearLayout.addView(layout);
-        }
+        recyclerView.setLayoutManager(manager);
+        adapter = new LessonAdapter(lessons);
+        recyclerView.setAdapter(adapter);
     }
 }

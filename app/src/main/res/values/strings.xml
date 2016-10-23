@@ -13,9 +13,9 @@
     <string name="no_internet_connection">İnternet bağlantısı yok</string>
     <string name="wrong_credentials">Yanlış numara veya şifre</string>
     <string name="authentication_auth_key_not_found">Lütfen tekrar deneyiniz</string>
-    <string name="lesson_code_tr">Kodu</string>
+    <string name="lesson_code_tr">Ders Kodu:</string>
     <string name="lesson_name_tr">Ders Adı</string>
-    <string name="lesson_credit_tr">Kredisi</string>
+    <string name="lesson_credit_tr">Ders Kredisi:</string>
     <string name="student_number_tr">Numara:</string>
     <string name="faculty_tr">Fakülte Adı:</string>
     <string name="department_tr">Bölüm Adı:</string>
