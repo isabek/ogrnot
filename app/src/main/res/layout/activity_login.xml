@@ -42,8 +42,8 @@
                 android:paddingRight="5dp"
                 android:paddingTop="10dp"
                 android:text="@string/label_student_number"
-                android:textColor="@color/text"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/text" />
 
             <EditText
                 android:id="@+id/student_number"
@@ -51,9 +51,10 @@
                 android:completionThreshold="1"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:nextFocusDown="@+id/password"/>
+                android:nextFocusDown="@+id/password" />
 
             <TextView
+                android:id="@+id/label_password"
                 style="@style/ShadowText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,14 +64,13 @@
                 android:paddingTop="10dp"
                 android:text="@string/label_password"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text"
-                android:id="@+id/label_password" />
+                android:textColor="@color/text" />
 
             <EditText
                 android:id="@+id/password"
                 style="@style/SignInEditText"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
 
             <Button
                 android:id="@+id/button_sign_in"

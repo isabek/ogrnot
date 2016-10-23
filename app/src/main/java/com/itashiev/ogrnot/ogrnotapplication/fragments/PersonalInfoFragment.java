@@ -6,9 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
@@ -16,8 +15,6 @@ import com.itashiev.ogrnot.ogrnotapplication.model.student.Student;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
-import com.squareup.picasso.Picasso;
-
 
 import java.net.HttpURLConnection;
 
@@ -36,9 +33,8 @@ public class PersonalInfoFragment extends HelperFragment {
     TextView fatherTextView;
     TextView motherTextView;
     TextView nationalityTextView;
-    ImageView photoImageView;
 
-    RelativeLayout personaInfoRelativeLayout;
+    LinearLayout personaInfoRelativeLayout;
     ProgressBar personalInfoProgressBar;
 
     private static final String TAG = "PersonalInfoFragment";
@@ -53,7 +49,7 @@ public class PersonalInfoFragment extends HelperFragment {
 
         View inflate = inflater.inflate(R.layout.fragment_personal_info, container, false);
 
-        personaInfoRelativeLayout = (RelativeLayout) inflate.findViewById(R.id.personal_info_relative_layout);
+        personaInfoRelativeLayout = (LinearLayout) inflate.findViewById(R.id.personal_info_linear_layout);
         personalInfoProgressBar = (ProgressBar) inflate.findViewById(R.id.personal_info_progressbar);
 
         studentNumberTextView = (TextView) inflate.findViewById(R.id.student_number);
@@ -64,7 +60,6 @@ public class PersonalInfoFragment extends HelperFragment {
         fatherTextView = (TextView) inflate.findViewById(R.id.student_fathers_name);
         motherTextView = (TextView) inflate.findViewById(R.id.student_mothers_name);
         nationalityTextView = (TextView) inflate.findViewById(R.id.student_nationality);
-        photoImageView = (ImageView) inflate.findViewById(R.id.student_image);
 
         getDataFromApi();
 
@@ -112,16 +107,6 @@ public class PersonalInfoFragment extends HelperFragment {
         fatherTextView.setText(studentInfo.getFather());
         motherTextView.setText(studentInfo.getMother());
         nationalityTextView.setText(studentInfo.getNationality());
-        loadImage(studentInfo.getPhotoUrl());
     }
-
-    private void loadImage(String url) {
-        try {
-            Picasso.with(getActivity().getApplicationContext()).load(url).into(photoImageView);
-        } catch (Exception ex) {
-            Log.e(TAG, "Exception: " + ex.getMessage());
-        }
-    }
-
 
 }
