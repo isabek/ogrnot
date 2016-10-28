@@ -1,73 +1,85 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:background="#ffffff"
     android:gravity="center_horizontal">
 
     <android.support.v7.widget.CardView
         android:id="@+id/lesson"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/lesson_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="8dp"
-                android:textSize="13sp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lesson_name"
                 android:orientation="horizontal"
                 android:paddingBottom="8dp"
-                android:paddingTop="20dp">
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="2">
 
-                <TextView
-                    android:id="@+id/lesson_code_label"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="3dp"
-                    android:paddingTop="4dp"
-                    android:text="Ders Kodu:"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="12sp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/lesson_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="10dp"
-                    android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/lesson_code_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lesson_code_tr"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/lesson_credit_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
-                    android:paddingTop="10dp"
-                    android:text="@string/lesson_credit_tr"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/lesson_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/lesson_credit"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="10dp"
-                    android:textSize="12sp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/lesson_credit_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lesson_credit_tr"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/lesson_credit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
