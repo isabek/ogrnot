@@ -1,12 +1,15 @@
 package com.itashiev.ogrnot.ogrnotapplication.activities;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+
+    private AlertDialog.Builder alertDialog;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,9 +166,24 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_logout) {
-            finish();
-            return true;
+            alertDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+                    .setMessage(getString(R.string.logout_action_confirm))
+                    .setPositiveButton(R.string.logout_action_positive_button_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, int which) {
+                            dialog.dismiss();
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    finish();
+                                }
+                            }, 100);
+                        }
+                    })
+                    .setNegativeButton(R.string.logout_action_negative_button_text, null);
+            alertDialog.show();
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }
