@@ -50,4 +50,7 @@
     <string name="logout_action_confirm">Uygulamayı kapatmak istiyor musunuz?</string>
     <string name="logout_action_positive_button_text">Evet</string>
     <string name="logout_action_negative_button_text">Hayır</string>
+    <string name="lesson_gpa_tr">Ortalama:</string>
+    <string name="total_credit_tr">Kredi:</string>
+    <string name="total_average_tr">Ağırlıklı:</string>
 </resources>

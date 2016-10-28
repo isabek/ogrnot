@@ -2,6 +2,7 @@ package com.itashiev.ogrnot.ogrnotapplication.model.transcript.preparatory;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.Lesson;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

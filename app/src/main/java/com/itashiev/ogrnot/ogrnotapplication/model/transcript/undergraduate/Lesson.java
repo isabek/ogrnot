@@ -2,19 +2,23 @@ package com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Lesson {
+import java.io.Serializable;
+
+public class Lesson implements Serializable {
     private String code;
     private String name;
     private String mark;
     private String credit;
+
+    @JsonIgnore
     private String supplement;
 
     @JsonCreator
     public Lesson(@JsonProperty("code") String code, @JsonProperty("name") String name,
-                  @JsonProperty("mark") String mark, @JsonProperty("credit") String credit,
-                  @JsonProperty("supplement") String supplement) {
+                  @JsonProperty("mark") String mark, @JsonProperty("credit") String credit) {
         this.code = code;
         this.name = name;
         this.mark = mark;
