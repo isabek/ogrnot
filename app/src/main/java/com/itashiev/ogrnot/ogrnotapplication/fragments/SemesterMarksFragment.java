@@ -16,7 +16,7 @@ import com.itashiev.ogrnot.ogrnotapplication.model.grade.Grade;
 import com.itashiev.ogrnot.ogrnotapplication.model.grade.Lesson;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
-import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
+import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
 
 import java.net.HttpURLConnection;
 
@@ -50,7 +50,7 @@ public class SemesterMarksFragment extends HelperFragment {
 
     private void getLessonsMarksFromApi() {
         OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        String authKey = AuthKeyStore.getAuthKey(getActivity().getApplicationContext());
+        String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
 
         apiService.getGrade(authKey).enqueue(new Callback<Grade>() {
             @Override

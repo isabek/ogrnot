@@ -14,7 +14,7 @@ import com.itashiev.ogrnot.ogrnotapplication.R;
 import com.itashiev.ogrnot.ogrnotapplication.model.student.Student;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
-import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
+import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
 
 import java.net.HttpURLConnection;
 
@@ -68,7 +68,7 @@ public class PersonalInfoFragment extends HelperFragment {
 
     private void getDataFromApi() {
         OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        String authKey = AuthKeyStore.getAuthKey(getActivity().getApplicationContext());
+        String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
         apiService.getStudentInfo(authKey).enqueue(new Callback<Student>() {
             @Override
             public void onResponse(Call<Student> call, Response<Student> response) {

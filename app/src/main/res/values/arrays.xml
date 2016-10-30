@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="list_entries">
+        <item>@string/main_menu_item</item>
+        <item>@string/personal_info_item</item>
+        <item>@string/taken_lessons_item</item>
+        <item>@string/semester_marks_item</item>
+        <item>@string/transcript_menu_item</item>
+    </string-array>
+    <string-array name="list_entries_values">
+        <item>nav_main_menu_item</item>
+        <item>nav_personal_info_item</item>
+        <item>nav_taken_lessons_item</item>
+        <item>nav_semester_marks_item</item>
+        <item>nav_transcript_item</item>
+    </string-array>
+</resources>

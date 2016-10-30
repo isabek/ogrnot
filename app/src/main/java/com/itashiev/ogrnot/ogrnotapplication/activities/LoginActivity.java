@@ -3,8 +3,10 @@ package com.itashiev.ogrnot.ogrnotapplication.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +17,7 @@ import com.itashiev.ogrnot.ogrnotapplication.R;
 import com.itashiev.ogrnot.ogrnotapplication.model.authentication.Authentication;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
-import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
+import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
 
 import java.net.HttpURLConnection;
 
@@ -42,6 +44,8 @@ public class LoginActivity extends Activity {
         passwordEditTextView = (EditText) findViewById(R.id.password);
         signInButtonView = (Button) findViewById(R.id.button_sign_in);
 
+        useCredentials();
+
         signInButtonView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +56,19 @@ public class LoginActivity extends Activity {
         });
     }
 
-    private void callLoginApi(String user, String pass) {
+    private void useCredentials() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean areCredentialsSaved = preferences.getBoolean("save_login_credentials_key", false);
+        String number = Storage.getNumber(getApplicationContext());
+        String password = Storage.getPassword(getApplicationContext());
+
+        if (areCredentialsSaved && !number.isEmpty() && !password.isEmpty()) {
+            studentNumberEditTextView.setText(number.trim());
+            passwordEditTextView.setText(password.trim());
+        }
+    }
+
+    private void callLoginApi(final String user, final String pass) {
         final OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
 
         initProgressDialog();
@@ -61,8 +77,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onResponse(Call<Authentication> call, retrofit2.Response<Authentication> response) {
                 if (call.isExecuted() && response.isSuccessful()) {
+                    saveCredentials(user, pass);
                     progressDialog.dismiss();
-                    AuthKeyStore.setAuthKey(getApplicationContext(), response.body().getAuthKey());
+                    Storage.setAuthKey(getApplicationContext(), response.body().getAuthKey());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     finish();
                     startActivity(intent);
@@ -99,6 +116,11 @@ public class LoginActivity extends Activity {
         progressDialog.setMessage(getString(R.string.authenticate));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
+    }
+
+    private void saveCredentials(String number, String password) {
+        Storage.setNumber(getApplicationContext(), number);
+        Storage.setPassword(getApplicationContext(), password);
     }
 }
 

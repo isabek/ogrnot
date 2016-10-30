@@ -53,4 +53,10 @@
     <string name="lesson_gpa_tr">Ortalama:</string>
     <string name="total_credit_tr">Kredi:</string>
     <string name="total_average_tr">Ağırlıklı:</string>
+    <string name="settings_title">Ayarlar</string>
+    <string name="save_login_credentials_title">Numara ve Şifreyi Sakla</string>
+    <string name="save_login_credentials_summary">Uygulamaya giriş yaparken</string>
+    <string name="default_selected_menu_item_title">Varsayılan Seçilmiş Menü Öğesi</string>
+    <string name="default_selected_menu_item_summary">Seçilmiş olan menu öğesi</string>
+    <string name="default_selected_menu_item_dialog_title">Menu Ögeleri</string>
 </resources>

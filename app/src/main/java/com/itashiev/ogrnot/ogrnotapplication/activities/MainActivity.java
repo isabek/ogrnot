@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,19 +18,19 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.MainMenuFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.PersonalInfoFragment;
+import com.itashiev.ogrnot.ogrnotapplication.fragments.PreferenceFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.SemesterMarksFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.TakenLessonsFragment;
 import com.itashiev.ogrnot.ogrnotapplication.fragments.TranscriptFragment;
 import com.itashiev.ogrnot.ogrnotapplication.model.student.Student;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
-import com.itashiev.ogrnot.ogrnotapplication.storage.AuthKeyStore;
+import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+    public static final String DEFAULT_MENU_ITEM_ID_NAME = "nav_main_menu_item";
+    public static final String DEFAULT_SELECTED_MENU_ITEM_KEY = "default_selected_menu_item_key";
 
     private AlertDialog.Builder alertDialog;
 
@@ -59,8 +62,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        selectFragmentByMenuItem(R.id.nav_main_menu_item);
+        int itemId = getDefaultSelectedMenuItemId();
+        selectFragmentByMenuItem(itemId);
+
         setNavigationHeaderData();
+    }
+
+    private int getDefaultSelectedMenuItemId() {
+        String menuItemId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(DEFAULT_SELECTED_MENU_ITEM_KEY, DEFAULT_MENU_ITEM_ID_NAME);
+        return getResources().getIdentifier(menuItemId, "id", getPackageName());
     }
 
     private void setNavigationHeaderData() {
@@ -73,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         final TextView studentFullNameTextView = (TextView) inflate.findViewById(R.id.student_full_name);
 
         OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        apiService.getStudentInfo(AuthKeyStore.getAuthKey(getApplicationContext())).enqueue(new Callback<Student>() {
+        apiService.getStudentInfo(Storage.getAuthKey(getApplicationContext())).enqueue(new Callback<Student>() {
             @Override
             public void onResponse(Call<Student> call, Response<Student> response) {
                 if (call.isExecuted() && response.isSuccessful()) {
@@ -132,6 +142,10 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.nav_transcript_item:
                 fragment = new TranscriptFragment();
+                break;
+
+            case R.id.nav_settings:
+                fragment = new PreferenceFragment();
                 break;
 
             default:
