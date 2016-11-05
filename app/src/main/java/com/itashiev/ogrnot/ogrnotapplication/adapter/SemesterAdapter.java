@@ -2,6 +2,9 @@ package com.itashiev.ogrnot.ogrnotapplication.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.SemesterViewHolder> {
+
+    private int counter = 0;
 
     private final TranscriptFragment transcriptFragment;
     private List<Semester> semesters;
@@ -39,10 +44,42 @@ public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.Semest
         holder.semesterNameTextView.setText(semester.getName());
         holder.semesterTotalCreditTextView.setText(semester.getTotalCredit());
 
+        if (counter % 2 == 0) {
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#fff5f5f5"));
+        }
+        counter++;
+
         if (semester.getGpa() == null && semester.getTotalAverage() == null) {
             holder.semesterGpaLinearLayout.setVisibility(View.INVISIBLE);
             holder.semesterTotalAverageLinearLayout.setVisibility(View.INVISIBLE);
             return;
+        }
+
+        if (semester.getLessons() == null) {
+            holder.cardView.setClickable(false);
+
+            holder.semesterNameTextView.setTypeface(
+                    holder.semesterNameTextView.getTypeface(),
+                    Typeface.BOLD);
+            holder.semesterTotalCreditTextView.setTypeface(
+                    holder.semesterTotalCreditTextView.getTypeface(),
+                    Typeface.BOLD);
+            holder.semesterTotalAverageTextView.setTypeface(
+                    holder.semesterTotalAverageTextView.getTypeface(),
+                    Typeface.BOLD);
+            holder.semesterGpaTextView.setTypeface(
+                    holder.semesterGpaTextView.getTypeface(),
+                    Typeface.BOLD);
+            holder.semesterTotalCreditLabelTextView.setTypeface(
+                    holder.semesterTotalCreditLabelTextView.getTypeface(),
+                    Typeface.BOLD);
+            holder.semesterTotalAverageLabelTextView.setTypeface(
+                    holder.semesterTotalAverageLabelTextView.getTypeface(),
+                    Typeface.BOLD);
+            holder.semesterGpaLabelTextView.setTypeface(
+                    holder.semesterGpaLabelTextView.getTypeface(),
+                    Typeface.BOLD);
+            holder.cardView.setCardBackgroundColor(Color.parseColor("#fffafafa"));
         }
 
         holder.semesterTotalAverageTextView.setText(semester.getTotalAverage());
@@ -59,9 +96,14 @@ public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.Semest
         private final TextView semesterNameTextView;
         private final TextView semesterTotalAverageTextView;
         private final TextView semesterGpaTextView;
+        private final TextView semesterTotalCreditLabelTextView;
+        private final TextView semesterTotalAverageLabelTextView;
+        private final TextView semesterGpaLabelTextView;
 
         private final LinearLayout semesterTotalAverageLinearLayout;
         private final LinearLayout semesterGpaLinearLayout;
+
+        private CardView cardView;
 
         SemesterViewHolder(View itemView) {
             super(itemView);
@@ -69,8 +111,15 @@ public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.Semest
             semesterTotalCreditTextView = (TextView) itemView.findViewById(R.id.semester_total_credit);
             semesterTotalAverageTextView = (TextView) itemView.findViewById(R.id.semester_total_average);
             semesterGpaTextView = (TextView) itemView.findViewById(R.id.semester_gpa);
+
+            semesterTotalCreditLabelTextView = (TextView) itemView.findViewById(R.id.semester_total_credit_label);
+            semesterTotalAverageLabelTextView = (TextView) itemView.findViewById(R.id.semester_total_average_label);
+            semesterGpaLabelTextView = (TextView) itemView.findViewById(R.id.semester_gpa_label);
+
             semesterTotalAverageLinearLayout = (LinearLayout) itemView.findViewById(R.id.semester_total_average_layout);
             semesterGpaLinearLayout = (LinearLayout) itemView.findViewById(R.id.semester_gpa_layout);
+
+            cardView = (CardView) itemView;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
