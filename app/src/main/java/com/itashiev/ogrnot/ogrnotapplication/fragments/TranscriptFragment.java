@@ -32,6 +32,8 @@ import retrofit2.Response;
 
 public class TranscriptFragment extends HelperFragment {
 
+    private Call<Transcript> call;
+
     private ProgressBar transcriptProgressBar;
     private View inflate;
     private RecyclerView recyclerView;
@@ -62,11 +64,20 @@ public class TranscriptFragment extends HelperFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onStop() {
+        if (call != null) {
+            call.cancel();
+        }
+        super.onStop();
+    }
+
     private void getLessonsFromApi() {
         OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
         String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
 
-        apiService.getTranscript(authKey).enqueue(new Callback<Transcript>() {
+        call = apiService.getTranscript(authKey);
+        call.enqueue(new Callback<Transcript>() {
             @Override
             public void onResponse(Call<Transcript> call, Response<Transcript> response) {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -88,8 +99,10 @@ public class TranscriptFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<Transcript> call, Throwable t) {
-                transcriptProgressBar.setVisibility(View.INVISIBLE);
-                showNoInternetConnectionToast();
+                if (!call.isCanceled()) {
+                    transcriptProgressBar.setVisibility(View.INVISIBLE);
+                    showNoInternetConnectionToast();
+                }
                 Log.d(TAG, "onFailure: " + call.request(), t);
             }
         });

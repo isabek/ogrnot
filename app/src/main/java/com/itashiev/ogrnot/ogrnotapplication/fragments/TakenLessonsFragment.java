@@ -25,8 +25,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TakenLessonsFragment extends HelperFragment {
+    private Call<List<Lesson>> call;
+
     private ProgressBar studentTakenLessonsProgressBar;
-    RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager manager;
     private RecyclerView recyclerView;
     private View inflate;
@@ -51,12 +53,20 @@ public class TakenLessonsFragment extends HelperFragment {
         return inflate;
     }
 
+    @Override
+    public void onStop() {
+        if (call != null) {
+            call.cancel();
+        }
+        super.onStop();
+    }
+
     private void getLessonsFromApi() {
-
-
         OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
         String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
-        apiService.getLessons(authKey).enqueue(new Callback<List<Lesson>>() {
+
+        call = apiService.getLessons(authKey);
+        call.enqueue(new Callback<List<Lesson>>() {
             @Override
             public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -78,8 +88,10 @@ public class TakenLessonsFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<List<Lesson>> call, Throwable t) {
-                studentTakenLessonsProgressBar.setVisibility(View.INVISIBLE);
-                showNoInternetConnectionToast();
+                if (!call.isCanceled()) {
+                    studentTakenLessonsProgressBar.setVisibility(View.INVISIBLE);
+                    showNoInternetConnectionToast();
+                }
                 Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });

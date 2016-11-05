@@ -26,6 +26,8 @@ import retrofit2.Response;
 
 public class SemesterMarksFragment extends HelperFragment {
 
+    private Call<Grade> call;
+
     private LinearLayout semestersLessonsMarksLinearLayout;
     private ProgressBar semesterLessonsMarksProgressBar;
 
@@ -48,11 +50,19 @@ public class SemesterMarksFragment extends HelperFragment {
         return inflate;
     }
 
+    @Override
+    public void onStop() {
+        if (call != null) {
+            call.cancel();
+        }
+        super.onStop();
+    }
+
     private void getLessonsMarksFromApi() {
         OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
         String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
-
-        apiService.getGrade(authKey).enqueue(new Callback<Grade>() {
+        call = apiService.getGrade(authKey);
+        call.enqueue(new Callback<Grade>() {
             @Override
             public void onResponse(Call<Grade> call, Response<Grade> response) {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -74,8 +84,10 @@ public class SemesterMarksFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<Grade> call, Throwable t) {
-                semesterLessonsMarksProgressBar.setVisibility(View.INVISIBLE);
-                showNoInternetConnectionToast();
+                if (!call.isCanceled()) {
+                    semesterLessonsMarksProgressBar.setVisibility(View.INVISIBLE);
+                    showNoInternetConnectionToast();
+                }
                 Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });

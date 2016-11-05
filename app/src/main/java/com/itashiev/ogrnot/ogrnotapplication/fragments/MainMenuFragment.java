@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
+import com.itashiev.ogrnot.ogrnotapplication.model.grade.Grade;
 import com.itashiev.ogrnot.ogrnotapplication.model.info.MainInfo;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
@@ -24,12 +25,13 @@ import retrofit2.Response;
 
 public class MainMenuFragment extends HelperFragment {
 
+    private Call<MainInfo> call;
 
-    TextView studentNumberTextView;
-    TextView facultyTextView;
-    TextView departmentTextView;
-    LinearLayout mainMenuLinearLayout;
-    ProgressBar mainMenuProgressBar;
+    private TextView studentNumberTextView;
+    private TextView facultyTextView;
+    private TextView departmentTextView;
+    private LinearLayout mainMenuLinearLayout;
+    private ProgressBar mainMenuProgressBar;
 
     private static final String TAG = "MainMenuFragment";
 
@@ -54,10 +56,20 @@ public class MainMenuFragment extends HelperFragment {
         return inflate;
     }
 
+    @Override
+    public void onStop() {
+        if (call != null) {
+            call.cancel();
+        }
+        super.onStop();
+    }
+
     private void getDataFromApi() {
         OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
         String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
-        apiService.getMainInfo(authKey).enqueue(new Callback<MainInfo>() {
+
+        call = apiService.getMainInfo(authKey);
+        call.enqueue(new Callback<MainInfo>() {
             @Override
             public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -79,8 +91,10 @@ public class MainMenuFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<MainInfo> call, Throwable t) {
-                mainMenuProgressBar.setVisibility(View.INVISIBLE);
-                showNoInternetConnectionToast();
+                if (!call.isCanceled()) {
+                    mainMenuProgressBar.setVisibility(View.INVISIBLE);
+                    showNoInternetConnectionToast();
+                }
                 Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });

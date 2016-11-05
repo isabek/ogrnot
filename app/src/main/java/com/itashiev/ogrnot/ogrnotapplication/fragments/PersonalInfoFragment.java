@@ -25,17 +25,19 @@ import retrofit2.Response;
 
 public class PersonalInfoFragment extends HelperFragment {
 
-    TextView studentNumberTextView;
-    TextView nameTextView;
-    TextView surnameTextView;
-    TextView birthplaceTextView;
-    TextView birthdayTextView;
-    TextView fatherTextView;
-    TextView motherTextView;
-    TextView nationalityTextView;
+    private Call<Student> call;
 
-    LinearLayout personaInfoRelativeLayout;
-    ProgressBar personalInfoProgressBar;
+    private TextView studentNumberTextView;
+    private TextView nameTextView;
+    private TextView surnameTextView;
+    private TextView birthplaceTextView;
+    private TextView birthdayTextView;
+    private TextView fatherTextView;
+    private TextView motherTextView;
+    private TextView nationalityTextView;
+
+    private LinearLayout personaInfoRelativeLayout;
+    private ProgressBar personalInfoProgressBar;
 
     private static final String TAG = "PersonalInfoFragment";
 
@@ -66,10 +68,20 @@ public class PersonalInfoFragment extends HelperFragment {
         return inflate;
     }
 
+    @Override
+    public void onStop() {
+        if (call != null) {
+            call.cancel();
+        }
+        super.onStop();
+    }
+
     private void getDataFromApi() {
         OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
         String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
-        apiService.getStudentInfo(authKey).enqueue(new Callback<Student>() {
+
+        call = apiService.getStudentInfo(authKey);
+        call.enqueue(new Callback<Student>() {
             @Override
             public void onResponse(Call<Student> call, Response<Student> response) {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -91,8 +103,10 @@ public class PersonalInfoFragment extends HelperFragment {
 
             @Override
             public void onFailure(Call<Student> call, Throwable t) {
-                personalInfoProgressBar.setVisibility(View.INVISIBLE);
-                showNoInternetConnectionToast();
+                if (!call.isCanceled()) {
+                    personalInfoProgressBar.setVisibility(View.INVISIBLE);
+                    showNoInternetConnectionToast();
+                }
                 Log.e(TAG, "onFailure: " + call.request(), t);
             }
         });
