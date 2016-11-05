@@ -1,5 +1,7 @@
 package com.itashiev.ogrnot.ogrnotapplication.rest;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -13,13 +15,16 @@ public class OgrnotApiClient {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            httpClient.addInterceptor(httpLoggingInterceptor);
+            OkHttpClient httpClient = new OkHttpClient.Builder()
+                    .addInterceptor(httpLoggingInterceptor)
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(Config.BASE_URL)
                     .addConverterFactory(JacksonConverterFactory.create())
-                    .client(httpClient.build())
+                    .client(httpClient)
                     .build();
         }
         return retrofit;
