@@ -65,10 +65,11 @@ public class MainMenuFragment extends HelperFragment {
     }
 
     private void getDataFromApi() {
-        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
+        OgrnotApiInterface apiService = OgrnotApiClient
+                .getClient(getActivity().getApplicationContext())
+                .create(OgrnotApiInterface.class);
 
-        call = apiService.getMainInfo(authKey);
+        call = apiService.getMainInfo();
         call.enqueue(new Callback<MainInfo>() {
             @Override
             public void onResponse(Call<MainInfo> call, Response<MainInfo> response) {

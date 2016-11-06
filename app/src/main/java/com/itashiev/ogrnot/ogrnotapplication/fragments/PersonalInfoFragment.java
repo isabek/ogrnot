@@ -77,10 +77,11 @@ public class PersonalInfoFragment extends HelperFragment {
     }
 
     private void getDataFromApi() {
-        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
+        OgrnotApiInterface apiService = OgrnotApiClient
+                .getClient(getActivity().getApplicationContext())
+                .create(OgrnotApiInterface.class);
 
-        call = apiService.getStudentInfo(authKey);
+        call = apiService.getStudentInfo();
         call.enqueue(new Callback<Student>() {
             @Override
             public void onResponse(Call<Student> call, Response<Student> response) {

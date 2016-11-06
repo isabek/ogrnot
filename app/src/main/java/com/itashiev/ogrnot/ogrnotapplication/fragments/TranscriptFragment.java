@@ -73,10 +73,11 @@ public class TranscriptFragment extends HelperFragment {
     }
 
     private void getLessonsFromApi() {
-        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
+        OgrnotApiInterface apiService = OgrnotApiClient
+                .getClient(getActivity().getApplicationContext())
+                .create(OgrnotApiInterface.class);
 
-        call = apiService.getTranscript(authKey);
+        call = apiService.getTranscript();
         call.enqueue(new Callback<Transcript>() {
             @Override
             public void onResponse(Call<Transcript> call, Response<Transcript> response) {

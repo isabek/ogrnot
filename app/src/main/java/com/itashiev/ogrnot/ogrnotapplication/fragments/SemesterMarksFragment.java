@@ -59,9 +59,11 @@ public class SemesterMarksFragment extends HelperFragment {
     }
 
     private void getLessonsMarksFromApi() {
-        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
-        call = apiService.getGrade(authKey);
+        OgrnotApiInterface apiService = OgrnotApiClient
+                .getClient(getActivity().getApplicationContext())
+                .create(OgrnotApiInterface.class);
+
+        call = apiService.getGrade();
         call.enqueue(new Callback<Grade>() {
             @Override
             public void onResponse(Call<Grade> call, Response<Grade> response) {

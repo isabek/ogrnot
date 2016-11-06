@@ -82,8 +82,11 @@ public class MainActivity extends AppCompatActivity
         final TextView studentNumberTextView = (TextView) inflate.findViewById(R.id.student_number);
         final TextView studentFullNameTextView = (TextView) inflate.findViewById(R.id.student_full_name);
 
-        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        apiService.getStudentInfo(Storage.getAuthKey(getApplicationContext())).enqueue(new Callback<Student>() {
+        OgrnotApiInterface apiService = OgrnotApiClient
+                .getClient(getApplicationContext())
+                .create(OgrnotApiInterface.class);
+
+        apiService.getStudentInfo().enqueue(new Callback<Student>() {
             @Override
             public void onResponse(Call<Student> call, Response<Student> response) {
                 if (call.isExecuted() && response.isSuccessful()) {

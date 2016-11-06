@@ -62,10 +62,11 @@ public class TakenLessonsFragment extends HelperFragment {
     }
 
     private void getLessonsFromApi() {
-        OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
-        String authKey = Storage.getAuthKey(getActivity().getApplicationContext());
+        OgrnotApiInterface apiService = OgrnotApiClient
+                .getClient(getActivity().getApplicationContext())
+                .create(OgrnotApiInterface.class);
 
-        call = apiService.getLessons(authKey);
+        call = apiService.getLessons();
         call.enqueue(new Callback<List<Lesson>>() {
             @Override
             public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {

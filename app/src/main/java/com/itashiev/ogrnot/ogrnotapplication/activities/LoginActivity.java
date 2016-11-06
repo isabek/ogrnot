@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
 import com.itashiev.ogrnot.ogrnotapplication.model.authentication.Authentication;
+import com.itashiev.ogrnot.ogrnotapplication.model.authentication.Credentials;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
@@ -68,16 +69,22 @@ public class LoginActivity extends Activity {
         }
     }
 
-    private void callLoginApi(final String user, final String pass) {
-        final OgrnotApiInterface apiService = OgrnotApiClient.getClient().create(OgrnotApiInterface.class);
+    private void callLoginApi(final String number, final String password) {
+        final OgrnotApiInterface apiService = OgrnotApiClient
+                .getClient(getApplicationContext())
+                .create(OgrnotApiInterface.class);
 
         initProgressDialog();
 
-        apiService.authenticate(user, pass).enqueue(new Callback<Authentication>() {
+        Credentials credentials = new Credentials()
+                .setNumber(number)
+                .setPassword(password);
+
+        apiService.authenticate(credentials).enqueue(new Callback<Authentication>() {
             @Override
             public void onResponse(Call<Authentication> call, retrofit2.Response<Authentication> response) {
                 if (call.isExecuted() && response.isSuccessful()) {
-                    saveCredentials(user, pass);
+                    saveCredentials(number, password);
                     progressDialog.dismiss();
                     Storage.setAuthKey(getApplicationContext(), response.body().getAuthKey());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
