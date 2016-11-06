@@ -47,7 +47,7 @@
     <string name="semester_marks_item">Dönemlik Notlar</string>
     <string name="transcript_menu_item">Transkript</string>
     <string name="logout">Çıkış Yap</string>
-    <string name="logout_action_confirm">Uygulamayı kapatmak istiyor musunuz?</string>
+    <string name="logout_action_confirm">Uygulamayı kapatmak istediğinizden emin misiniz?</string>
     <string name="logout_action_positive_button_text">Evet</string>
     <string name="logout_action_negative_button_text">Hayır</string>
     <string name="lesson_gpa_tr">Ortalama:</string>
