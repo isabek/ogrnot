@@ -20,11 +20,12 @@ import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.Less
 import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.Semester;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
-import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,6 +33,8 @@ import retrofit2.Response;
 
 public class TranscriptFragment extends HelperFragment {
 
+    public static final String GENERAL_GPA_TR_RESOURCE_KEY = "general_gpa_tr";
+    public static final String PREPARATORY_TR_RESOURCE_KEY = "preparatory_tr";
     private Call<Transcript> call;
 
     private ProgressBar transcriptProgressBar;
@@ -39,6 +42,7 @@ public class TranscriptFragment extends HelperFragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager manager;
     private RecyclerView.Adapter adapter;
+    private Map<String, String> stringResources = new HashMap<>();
 
     private static final String TAG = "TranscriptFragment";
 
@@ -53,6 +57,9 @@ public class TranscriptFragment extends HelperFragment {
         recyclerView = (RecyclerView) inflate.findViewById(R.id.student_transcript_recycler_view);
         transcriptProgressBar = (ProgressBar) inflate.findViewById(R.id.student_transcript_progressbar);
         manager = new LinearLayoutManager(getActivity().getApplicationContext());
+
+        stringResources.put(GENERAL_GPA_TR_RESOURCE_KEY, getString(R.string.general_gpa_tr));
+        stringResources.put(PREPARATORY_TR_RESOURCE_KEY, getString(R.string.preparatory_tr));
 
         getLessonsFromApi();
 
@@ -127,7 +134,7 @@ public class TranscriptFragment extends HelperFragment {
         }
 
         General general = transcript.getUndergraduate().getGeneral();
-        Semester semester = new Semester(getString(R.string.general_gpa_tr), null, general.getGpa(), general.getTotalCredit(), general.getTotalAverage());
+        Semester semester = new Semester(stringResources.get(GENERAL_GPA_TR_RESOURCE_KEY), null, general.getGpa(), general.getTotalCredit(), general.getTotalAverage());
         semesters.add(semester);
     }
 
@@ -150,7 +157,7 @@ public class TranscriptFragment extends HelperFragment {
         Preparatory preparatory = transcript.getPreparatory();
         List<Lesson> lessons = preparatory.getLessons();
         String credit = String.valueOf(getAllCredit(lessons));
-        Semester semester = new Semester(getString(R.string.preparatory_tr), lessons, null, credit, null);
+        Semester semester = new Semester(stringResources.get(PREPARATORY_TR_RESOURCE_KEY), lessons, null, credit, null);
         semesters.add(semester);
     }
 
