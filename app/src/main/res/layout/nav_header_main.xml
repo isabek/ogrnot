@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="0dp"
-        android:src="@drawable/ic_account_circle_white" />
+        app:srcCompat="@drawable/ic_account_circle_white" />
 
     <TextView
         android:id="@+id/student_full_name"

@@ -75,12 +75,10 @@ public class MainActivity extends AppCompatActivity
 
     private void setNavigationHeaderData() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View inflate = LayoutInflater
-                .from(getApplicationContext())
-                .inflate(R.layout.nav_header_main, navigationView);
-
-        final TextView studentNumberTextView = (TextView) inflate.findViewById(R.id.student_number);
-        final TextView studentFullNameTextView = (TextView) inflate.findViewById(R.id.student_full_name);
+        if (navigationView.getHeaderCount() == 0) return;
+        View headerLayout = navigationView.getHeaderView(0);
+        final TextView studentNumberTextView = (TextView) headerLayout.findViewById(R.id.student_number);
+        final TextView studentFullNameTextView = (TextView) headerLayout.findViewById(R.id.student_full_name);
 
         OgrnotApiInterface apiService = OgrnotApiClient
                 .getClient(getApplicationContext())
