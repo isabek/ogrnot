@@ -2,23 +2,25 @@ package com.itashiev.ogrnot.ogrnotapplication.fragments;
 
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.model.grade.Exam;
+import com.itashiev.ogrnot.ogrnotapplication.adapter.SemesterLessonsMarksAdapter;
 import com.itashiev.ogrnot.ogrnotapplication.model.grade.Grade;
 import com.itashiev.ogrnot.ogrnotapplication.model.grade.Lesson;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
-import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
+import com.itashiev.ogrnot.ogrnotapplication.view.EmptyRecyclerView;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,10 +30,13 @@ public class SemesterMarksFragment extends HelperFragment {
 
     private Call<Grade> call;
 
-    private LinearLayout semestersLessonsMarksLinearLayout;
     private ProgressBar semesterLessonsMarksProgressBar;
+    private EmptyRecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
 
+    private View inflate;
     private static final String TAG = "SemesterMarksFragment";
+    private LinearLayoutManager manager;
 
     public SemesterMarksFragment() {
 
@@ -41,9 +46,10 @@ public class SemesterMarksFragment extends HelperFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.fragment_semester_marks, container, false);
-        semestersLessonsMarksLinearLayout = (LinearLayout) inflate.findViewById(R.id.semester_lessons_marks);
+        inflate = inflater.inflate(R.layout.fragment_semester_marks, container, false);
+        recyclerView = (EmptyRecyclerView) inflate.findViewById(R.id.semester_lessons_marks_recycler_view);
         semesterLessonsMarksProgressBar = (ProgressBar) inflate.findViewById(R.id.semester_lessons_marks_progressbar);
+        manager = new LinearLayoutManager(getActivity().getApplicationContext());
 
         getLessonsMarksFromApi();
 
@@ -80,7 +86,6 @@ public class SemesterMarksFragment extends HelperFragment {
                     Log.d(TAG, "onResponse: " + response.raw());
                 }
 
-                semestersLessonsMarksLinearLayout.setVisibility(View.VISIBLE);
                 semesterLessonsMarksProgressBar.setVisibility(View.INVISIBLE);
             }
 
@@ -96,28 +101,17 @@ public class SemesterMarksFragment extends HelperFragment {
     }
 
     private void fillExamsView(Grade grade) {
-        if (grade.getLessons() != null && grade.getLessons().size() > 0) {
-            for (Lesson lesson : grade.getLessons()) {
-                LinearLayout semesterLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_layout, null);
-                LinearLayout semesterLinearLayout = (LinearLayout) semesterLayout.findViewById(R.id.lesson_marks_linear_layout);
 
-                ((TextView) semesterLayout.findViewById(R.id.lesson_name)).setText(lesson.getName());
-
-                for (Exam exam : lesson.getExams()) {
-                    LinearLayout examLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lesson_marks_layout, null);
-
-                    ((TextView) examLinearLayout.findViewById(R.id.exam_name)).setText(exam.getName());
-                    ((TextView) examLinearLayout.findViewById(R.id.exam_mark)).setText(exam.getMark());
-                    ((TextView) examLinearLayout.findViewById(R.id.exam_avg)).setText(exam.getAvg());
-
-                    semesterLinearLayout.addView(examLinearLayout);
-                }
-                semestersLessonsMarksLinearLayout.addView(semesterLayout);
-            }
-
-        } else {
-            LinearLayout semesterMarksEmptyLinearLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.semester_lessons_marks_empty_layout, null);
-            semestersLessonsMarksLinearLayout.addView(semesterMarksEmptyLinearLayout);
+        List<Lesson> lessons = grade.getLessons();
+        if (grade.getLessons() != null) {
+            lessons = new ArrayList<>();
         }
+
+        recyclerView.setLayoutManager(manager);
+        adapter = new SemesterLessonsMarksAdapter(lessons);
+        recyclerView.setAdapter(adapter);
+
+        View emptyView = inflate.findViewById(R.id.semester_lessons_marks_empty_view);
+        recyclerView.setEmptyView(emptyView);
     }
 }
