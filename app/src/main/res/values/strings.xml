@@ -59,4 +59,6 @@
     <string name="default_selected_menu_item_title">Varsayılan Seçilmiş Menü Öğesi</string>
     <string name="default_selected_menu_item_summary">Seçilmiş olan menu öğesi</string>
     <string name="default_selected_menu_item_dialog_title">Menu Ögeleri</string>
+    <string name="student_taken_lessons_empty">Siz bu dönem ders almadınız</string>
+    <string name="student_transcript_lessons_empty">Transkriptiniz henüz açıklanmadı</string>
 </resources>

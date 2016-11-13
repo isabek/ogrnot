@@ -16,8 +16,10 @@ import com.itashiev.ogrnot.ogrnotapplication.model.lesson.Lesson;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
 import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
+import com.itashiev.ogrnot.ogrnotapplication.view.EmptyRecyclerView;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,7 +32,7 @@ public class TakenLessonsFragment extends HelperFragment {
     private ProgressBar studentTakenLessonsProgressBar;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager manager;
-    private RecyclerView recyclerView;
+    private EmptyRecyclerView recyclerView;
     private View inflate;
 
     private static final String TAG = "TakenLessonsFragment";
@@ -45,7 +47,7 @@ public class TakenLessonsFragment extends HelperFragment {
                              Bundle savedInstanceState) {
         inflate = inflater.inflate(R.layout.fragment_taken_lessons, container, false);
         studentTakenLessonsProgressBar = (ProgressBar) inflate.findViewById(R.id.student_taken_lessons_progressbar);
-        recyclerView = (RecyclerView) inflate.findViewById(R.id.student_taken_lessons_recycler_view);
+        recyclerView = (EmptyRecyclerView) inflate.findViewById(R.id.student_taken_lessons_recycler_view);
         manager = new LinearLayoutManager(getActivity().getApplicationContext());
 
         getLessonsFromApi();
@@ -102,5 +104,8 @@ public class TakenLessonsFragment extends HelperFragment {
         recyclerView.setLayoutManager(manager);
         adapter = new LessonAdapter(lessons);
         recyclerView.setAdapter(adapter);
+
+        View emptyView = inflate.findViewById(R.id.student_taken_lessons_empty_view);
+        recyclerView.setEmptyView(emptyView);
     }
 }

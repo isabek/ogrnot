@@ -20,6 +20,7 @@ import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.Less
 import com.itashiev.ogrnot.ogrnotapplication.model.transcript.undergraduate.Semester;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
+import com.itashiev.ogrnot.ogrnotapplication.view.EmptyRecyclerView;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class TranscriptFragment extends HelperFragment {
 
     private ProgressBar transcriptProgressBar;
     private View inflate;
-    private RecyclerView recyclerView;
+    private EmptyRecyclerView recyclerView;
     private RecyclerView.LayoutManager manager;
     private RecyclerView.Adapter adapter;
     private Map<String, String> stringResources = new HashMap<>();
@@ -54,7 +55,7 @@ public class TranscriptFragment extends HelperFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         inflate = inflater.inflate(R.layout.fragment_transcript, container, false);
-        recyclerView = (RecyclerView) inflate.findViewById(R.id.student_transcript_recycler_view);
+        recyclerView = (EmptyRecyclerView) inflate.findViewById(R.id.student_transcript_recycler_view);
         transcriptProgressBar = (ProgressBar) inflate.findViewById(R.id.student_transcript_progressbar);
         manager = new LinearLayoutManager(getActivity().getApplicationContext());
 
@@ -121,9 +122,13 @@ public class TranscriptFragment extends HelperFragment {
         addPreparatorySemester(transcript, semesters);
         addUndergraduateSemesters(transcript, semesters);
         addGeneralGpa(transcript, semesters);
+
         recyclerView.setLayoutManager(manager);
         adapter = new SemesterAdapter(semesters, this);
         recyclerView.setAdapter(adapter);
+
+        View emptyView = inflate.findViewById(R.id.student_transcript_empty_view);
+        recyclerView.setEmptyView(emptyView);
     }
 
     private void addGeneralGpa(Transcript transcript, List<Semester> semesters) {
