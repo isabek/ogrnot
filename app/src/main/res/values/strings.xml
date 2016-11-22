@@ -62,4 +62,5 @@
     <string name="student_taken_lessons_empty">Siz bu dönem ders almadınız</string>
     <string name="student_transcript_lessons_empty">Transkriptiniz henüz açıklanmadı</string>
     <string name="semester_lessons_marks_alert">Notlarınız gözükmüyorsa <a href="http://ogrnot.manas.kg/index.php?page=dersleri">Aldığı Dersler</a> menüsünden o dersin üzerine tıklayarak anket doldurmalısınız!</string>
+    <string name="empty_credentials">Numara ve şifre boş olmamalı</string>
 </resources>

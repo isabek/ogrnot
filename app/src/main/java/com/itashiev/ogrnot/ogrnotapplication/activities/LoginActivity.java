@@ -41,6 +41,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        progressDialog = new ProgressDialog(this);
         studentNumberEditTextView = (EditText) findViewById(R.id.student_number);
         passwordEditTextView = (EditText) findViewById(R.id.password);
         signInButtonView = (Button) findViewById(R.id.button_sign_in);
@@ -52,9 +53,18 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 String user = studentNumberEditTextView.getText().toString().trim();
                 String pass = passwordEditTextView.getText().toString().trim();
-                callLoginApi(user, pass);
+                if (areStudentNumberAndPasswordNotEmpty(user, pass)) {
+                    callLoginApi(user, pass);
+                } else {
+                    progressDialog.show();
+                    setMessageToProgressDialog(getString(R.string.empty_credentials));
+                }
             }
         });
+    }
+
+    private boolean areStudentNumberAndPasswordNotEmpty(String user, String pass) {
+        return !(user.trim().isEmpty() || pass.trim().isEmpty());
     }
 
     private void useCredentials() {
@@ -119,7 +129,6 @@ public class LoginActivity extends Activity {
     }
 
     private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.authenticate));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
