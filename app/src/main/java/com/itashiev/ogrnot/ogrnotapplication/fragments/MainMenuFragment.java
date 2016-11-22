@@ -10,11 +10,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
-import com.itashiev.ogrnot.ogrnotapplication.model.grade.Grade;
 import com.itashiev.ogrnot.ogrnotapplication.model.info.MainInfo;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiInterface;
-import com.itashiev.ogrnot.ogrnotapplication.storage.Storage;
 
 import java.net.HttpURLConnection;
 

@@ -101,9 +101,8 @@ public class SemesterMarksFragment extends HelperFragment {
     }
 
     private void fillExamsView(Grade grade) {
-
         List<Lesson> lessons = grade.getLessons();
-        if (grade.getLessons() != null) {
+        if (grade.getLessons() == null) {
             lessons = new ArrayList<>();
         }
 

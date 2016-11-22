@@ -31,7 +31,7 @@ public class TakenLessonsFragment extends HelperFragment {
 
     private ProgressBar studentTakenLessonsProgressBar;
     private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager manager;
+    private LinearLayoutManager manager;
     private EmptyRecyclerView recyclerView;
     private View inflate;
 
