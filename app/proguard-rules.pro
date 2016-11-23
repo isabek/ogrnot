@@ -17,5 +17,39 @@
 #}
 
 -dontwarn okio.**
--dontwarn retrofit2.Platform$Java8
 -dontwarn com.fasterxml.jackson.databind.**
+
+# Platform calls Class.forName on types which do not exist on Android to determine platform.
+-dontnote retrofit2.Platform
+# Platform used when running on RoboVM on iOS. Will not be used at runtime.
+-dontnote retrofit2.Platform$IOS$MainThreadExecutor
+# Platform used when running on Java 8 VMs. Will not be used at runtime.
+-dontwarn retrofit2.Platform$Java8
+# Retain generic type information for use by reflection by converters and adapters.
+-keepattributes Signature
+# Retain declared checked exceptions for use by a Proxy instance.
+-keepattributes Exceptions
+
+-keepnames class okio.**
+
+-keepnames class com.fasterxml.jackson.** { *; }
+
+-keep class android.support.v4.**
+
+-keep class org.apache.commons.lang3.**
+
+-keepattributes Signature,*Annotation*
+
+-keep class com.fasterxml.jackson.databind.ObjectMapper {
+    public <methods>;
+    protected <methods>;
+}
+-keep class com.fasterxml.jackson.databind.ObjectWriter {
+    public ** writeValueAsString(**);
+}
+
+-keep class com.itashiev.ogrnot.ogrnotapplication.** { *; }
+
+-keep class com.itashiev.ogrnot.ogrnotapplication.** {
+    native <methods>;
+}
