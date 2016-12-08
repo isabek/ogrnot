@@ -36,7 +36,7 @@
 
 -keep class android.support.v4.**
 
--keep class org.apache.commons.lang3.**
+-keepnames class org.apache.commons.lang3.** { *; }
 
 -keepattributes Signature,*Annotation*
 
