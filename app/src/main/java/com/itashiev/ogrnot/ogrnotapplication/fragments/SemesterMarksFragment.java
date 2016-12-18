@@ -1,7 +1,9 @@
 package com.itashiev.ogrnot.ogrnotapplication.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.ProgressBar;
 
 import com.itashiev.ogrnot.ogrnotapplication.R;
 import com.itashiev.ogrnot.ogrnotapplication.adapter.SemesterLessonsMarksAdapter;
+import com.itashiev.ogrnot.ogrnotapplication.model.grade.Exam;
 import com.itashiev.ogrnot.ogrnotapplication.model.grade.Grade;
 import com.itashiev.ogrnot.ogrnotapplication.model.grade.Lesson;
 import com.itashiev.ogrnot.ogrnotapplication.rest.OgrnotApiClient;
@@ -20,7 +23,9 @@ import com.itashiev.ogrnot.ogrnotapplication.view.EmptyRecyclerView;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,7 +41,6 @@ public class SemesterMarksFragment extends HelperFragment {
 
     private View inflate;
     private static final String TAG = "SemesterMarksFragment";
-    private LinearLayoutManager manager;
 
     public SemesterMarksFragment() {
 
@@ -49,7 +53,6 @@ public class SemesterMarksFragment extends HelperFragment {
         inflate = inflater.inflate(R.layout.fragment_semester_marks, container, false);
         recyclerView = (EmptyRecyclerView) inflate.findViewById(R.id.semester_lessons_marks_recycler_view);
         semesterLessonsMarksProgressBar = (ProgressBar) inflate.findViewById(R.id.semester_lessons_marks_progressbar);
-        manager = new LinearLayoutManager(getActivity().getApplicationContext());
 
         getLessonsMarksFromApi();
 
@@ -105,12 +108,32 @@ public class SemesterMarksFragment extends HelperFragment {
         if (grade.getLessons() == null) {
             lessons = new ArrayList<>();
         }
-
-        recyclerView.setLayoutManager(manager);
-        adapter = new SemesterLessonsMarksAdapter(lessons);
+        List<Lesson> newLessons = getGroupedLessons(lessons);
+        Context context = getActivity().getApplicationContext();
+        adapter = new SemesterLessonsMarksAdapter(context, newLessons);
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
 
         View emptyView = inflate.findViewById(R.id.semester_lessons_marks_empty_view);
         recyclerView.setEmptyView(emptyView);
+    }
+
+    @NonNull
+    private List<Lesson> getGroupedLessons(List<Lesson> lessons) {
+        Map<String, List<Exam>> map = new LinkedHashMap<>();
+        for (Lesson lesson : lessons) {
+            if (map.containsKey(lesson.getName())) {
+                map.get(lesson.getName()).addAll(lesson.getExams());
+            } else {
+                map.put(lesson.getName(), lesson.getExams());
+            }
+        }
+
+        List<Lesson> newLessons = new ArrayList<>();
+        for (String name : map.keySet()) {
+            newLessons.add(new Lesson(name, map.get(name)));
+        }
+        return newLessons;
     }
 }

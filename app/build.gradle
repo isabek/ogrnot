@@ -1,16 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
-
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.itashiev.ogrnot.ogrnotapplication"
         minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 2
-        versionName "1.0.1"
+        targetSdkVersion 25
+        versionCode 3
+        versionName "1.0.2"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -33,11 +31,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:cardview-v7:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'

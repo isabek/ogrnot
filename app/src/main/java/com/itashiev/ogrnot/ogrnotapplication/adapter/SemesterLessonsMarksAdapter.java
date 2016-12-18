@@ -18,10 +18,11 @@ public class SemesterLessonsMarksAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private static final int MARKS_ALERT_VIEW_TYPE = 0;
     private static final int MARKS_VIEW_TYPE = 1;
+    private final Context context;
     private List<Lesson> lessons;
-    private RecyclerView examsRecyclerView;
 
-    public SemesterLessonsMarksAdapter(List<Lesson> lessons) {
+    public SemesterLessonsMarksAdapter(Context context, List<Lesson> lessons) {
+        this.context = context;
         this.lessons = lessons;
     }
 
@@ -31,8 +32,6 @@ public class SemesterLessonsMarksAdapter extends RecyclerView.Adapter<RecyclerVi
 
         if (viewType == MARKS_VIEW_TYPE) {
             View view = LayoutInflater.from(context).inflate(R.layout.semester_lessons_marks_layout, parent, false);
-            examsRecyclerView = (RecyclerView) view.findViewById(R.id.lesson_exams_recycler_view);
-            examsRecyclerView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext()));
             return new SemesterLessonsMarksViewHolder(view);
         }
 
@@ -44,8 +43,14 @@ public class SemesterLessonsMarksAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof SemesterLessonsMarksViewHolder && position > 0) {
             Lesson lesson = lessons.get(position - 1);
-            ((SemesterLessonsMarksViewHolder) holder).lessonNameTextView.setText(lesson.getName());
-            examsRecyclerView.setAdapter(new LessonExamsAdapter(lesson.getExams()));
+            SemesterLessonsMarksViewHolder lessonsMarksViewHolder = (SemesterLessonsMarksViewHolder) holder;
+
+            lessonsMarksViewHolder.lessonNameTextView.setText(lesson.getName());
+
+            lessonsMarksViewHolder.examsRecyclerView.setHasFixedSize(true);
+            lessonsMarksViewHolder.examsRecyclerView.setAdapter(new LessonExamsAdapter(lesson.getExams()));
+            lessonsMarksViewHolder.examsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
         } else if (holder instanceof SemesterLessonsMarksAlertViewHolder) {
             ((SemesterLessonsMarksAlertViewHolder) holder).alertTextView.setMovementMethod(LinkMovementMethod.getInstance());
         }
@@ -64,19 +69,22 @@ public class SemesterLessonsMarksAdapter extends RecyclerView.Adapter<RecyclerVi
         return lessons.size() == 0 ? 0 : lessons.size() + 1;
     }
 
-    public static class SemesterLessonsMarksViewHolder extends RecyclerView.ViewHolder {
-        private final TextView lessonNameTextView;
 
-        public SemesterLessonsMarksViewHolder(View itemView) {
+    private static class SemesterLessonsMarksViewHolder extends RecyclerView.ViewHolder {
+        private final TextView lessonNameTextView;
+        private RecyclerView examsRecyclerView;
+
+        SemesterLessonsMarksViewHolder(View itemView) {
             super(itemView);
             lessonNameTextView = (TextView) itemView.findViewById(R.id.lesson_name);
+            examsRecyclerView = (RecyclerView) itemView.findViewById(R.id.lesson_exams_recycler_view);
         }
     }
 
-    public static class SemesterLessonsMarksAlertViewHolder extends RecyclerView.ViewHolder {
+    private static class SemesterLessonsMarksAlertViewHolder extends RecyclerView.ViewHolder {
         private final TextView alertTextView;
 
-        public SemesterLessonsMarksAlertViewHolder(View itemView) {
+        SemesterLessonsMarksAlertViewHolder(View itemView) {
             super(itemView);
             alertTextView = (TextView) itemView.findViewById(R.id.alert_title);
         }
