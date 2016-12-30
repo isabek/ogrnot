@@ -30,5 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingLeft="10dp"
+        android:textStyle="bold"
+        android:textColor="#D50000"
         android:textSize="15sp" />
 </LinearLayout>
